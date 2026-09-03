@@ -6,386 +6,173 @@
 <title>CYBER SHIELD — PAUSE • CHECK • PROTECT</title>
 <style>
 :root {
-  --primary: #22d3ee;
-  --secondary: #a78bfa;
-  --accent: #34d399;
-  --danger: #f87171;
-  --warning: #fbbf24;
-  --success: #34d399;
-  --bg: #0b1220;
-  --card: #111827;
-  --input: #1f2937;
-  --text: #f1f5f9;
-  --muted: #94a3b8;
-  --border: #334155;
-  --radius: 14px;
+  --primary: #0ea5e9; --secondary: #8b5cf6; --accent: #10b981;
+  --danger: #ef4444; --warning: #f59e0b; --success: #10b981;
+  --bg: #0f172a; --card: #1e293b; --input: #334155;
+  --text: #f8fafc; --muted: #94a3b8; --border: #475569;
+  --radius: 12px;
 }
-body.light {
-  --bg: #f1f5f9; --card: #ffffff; --input: #e2e8f0;
-  --text: #0f172a; --muted: #64748b; --border: #cbd5e1;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-  background: var(--bg); color: var(--text); min-height: 100vh;
-}
-.banner {
-  background: linear-gradient(90deg,#312e81,#581c87);
-  color: #e0e7ff; text-align: center; padding: 8px 12px; font-size: 0.82rem;
-}
-.nav {
-  position: sticky; top: 0; z-index: 50;
-  background: rgba(15,23,42,0.95); border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(10px);
-}
-.nav-inner {
-  max-width: 1100px; margin: 0 auto; padding: 12px 16px;
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-}
-.brand { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-.logo {
-  width: 36px; height: 36px; border-radius: 10px;
-  background: linear-gradient(135deg,var(--primary),var(--secondary));
-  display: grid; place-items: center; font-size: 1.1rem;
-  box-shadow: 0 0 16px rgba(34,211,238,0.35);
-}
-.brand b { color: var(--primary); letter-spacing: 0.5px; }
-.menu { display: flex; flex-wrap: wrap; gap: 6px; }
-.menu button {
-  border: 1px solid transparent; background: transparent; color: var(--muted);
-  padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem;
-}
-.menu button.active, .menu button:hover {
-  color: var(--primary); background: rgba(34,211,238,0.1); border-color: rgba(34,211,238,0.3);
-}
-.theme-btn {
-  border: 1px solid var(--border); background: var(--card); color: var(--text);
-  border-radius: 8px; padding: 6px 10px; cursor: pointer;
-}
-.page { display: none; }
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+body { background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.5; }
+.banner { background: #312e81; color: #e0e7ff; text-align: center; padding: 8px; font-size: 0.85rem; font-weight: bold; }
+
+/* NAVBAR */
+.nav { position: sticky; top: 0; background: rgba(15,23,42,0.9); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); z-index: 100; }
+.nav-inner { max-width: 1000px; margin: 0 auto; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
+.brand { display: flex; align-items: center; gap: 10px; cursor: pointer; font-weight: 800; color: var(--primary); font-size: 1.1rem; }
+.brand span { display: grid; place-items: center; width: 32px; height: 32px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border-radius: 8px; }
+.menu { display: flex; gap: 5px; flex-wrap: wrap; }
+.menu button { background: transparent; border: none; color: var(--muted); padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+.menu button:hover, .menu button.active { background: rgba(14,165,233,0.15); color: var(--primary); }
+
+/* LAYOUT */
+.page { display: none; padding: 30px 16px; max-width: 900px; margin: 0 auto; }
 .page.active { display: block; }
-.wrap { max-width: 1000px; margin: 0 auto; padding: 20px 16px 40px; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; }
+.title-box { text-align: center; margin-bottom: 24px; }
+.title-box h2 { font-size: 1.8rem; margin-bottom: 5px; }
+.title-box p { color: var(--muted); }
 
-/* HERO */
-.hero {
-  min-height: calc(100vh - 120px); display: grid; place-items: center; text-align: center;
-  padding: 40px 16px; position: relative; overflow: hidden;
-  background: radial-gradient(circle at 50% 20%, #1e1b4b 0%, #0b1220 65%);
-}
-#matrix { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.14; pointer-events: none; }
-.hero-content { position: relative; z-index: 2; max-width: 820px; }
-.hero-icon { font-size: 3.4rem; filter: drop-shadow(0 0 18px var(--primary)); animation: float 3s ease-in-out infinite; }
-@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
-.hero h1 {
-  font-size: clamp(2rem,5vw,3.4rem); font-weight: 900; letter-spacing: 1px; margin: 10px 0 14px;
-  background: linear-gradient(135deg,#22d3ee,#a78bfa,#34d399);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-}
-.tags { display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
-.tag {
-  padding: 6px 14px; border-radius: 999px; font-weight: 800; letter-spacing: 1px; font-size: 0.95rem;
-}
-.t1 { color:#22d3ee; border:1px solid rgba(34,211,238,.35); background:rgba(34,211,238,.1); }
-.t2 { color:#a78bfa; border:1px solid rgba(167,139,250,.35); background:rgba(167,139,250,.1); }
-.t3 { color:#34d399; border:1px solid rgba(52,211,153,.35); background:rgba(52,211,153,.1); }
-.dot { color: var(--muted); }
-.hero p { color: var(--muted); max-width: 620px; margin: 0 auto 22px; }
-.hero-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-.btn {
-  border: none; border-radius: 10px; padding: 12px 18px; font-weight: 700; cursor: pointer;
-}
-.btn-primary {
-  color: #fff; background: linear-gradient(135deg,var(--primary),var(--secondary));
-  box-shadow: 0 0 18px rgba(34,211,238,.28);
-}
-.btn-outline { background: transparent; color: var(--text); border: 2px solid var(--primary); }
-.features {
-  margin-top: 34px; display: grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap: 12px;
-}
-.feature {
-  background: rgba(17,24,39,.85); border: 1px solid var(--border); border-radius: 12px; padding: 16px;
-}
-.feature b { display:block; color: var(--primary); margin: 6px 0 4px; }
-.feature span { color: var(--muted); font-size: 0.82rem; }
+/* GRID & BUTTONS */
+.grid-cat { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-top: 15px; }
+.cat { background: var(--input); border: 2px solid var(--border); padding: 12px; border-radius: 10px; text-align: center; cursor: pointer; color: var(--muted); font-weight: 600; }
+.cat:hover, .cat.active { border-color: var(--primary); color: var(--primary); background: rgba(14,165,233,0.1); }
+.cat i { display: block; font-size: 1.5rem; font-style: normal; margin-bottom: 5px; }
 
-/* CARDS / FORMS */
-.card {
-  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
-  padding: 18px; margin-bottom: 16px;
-}
-.center { text-align: center; margin-bottom: 18px; }
-.center h2 { font-size: 1.6rem; }
-.center p { color: var(--muted); }
-.grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 10px; margin-top: 12px;
-}
-.cat {
-  background: var(--input); border: 2px solid var(--border); border-radius: 12px;
-  padding: 14px 10px; text-align: center; cursor: pointer; user-select: none;
-}
-.cat:hover, .cat.active {
-  border-color: var(--primary); color: var(--primary); background: rgba(34,211,238,0.08);
-}
-.cat .ico { font-size: 1.35rem; display: block; margin-bottom: 6px; }
-.tabs { display: flex; gap: 6px; background: var(--input); padding: 4px; border-radius: 10px; margin: 12px 0; }
-.tab {
-  flex: 1; border: none; background: transparent; color: var(--muted); padding: 9px;
-  border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.84rem;
-}
+.tabs { display: flex; gap: 5px; background: var(--input); padding: 5px; border-radius: 8px; margin-bottom: 15px; }
+.tab { flex: 1; padding: 10px; border: none; background: transparent; color: var(--muted); font-weight: bold; cursor: pointer; border-radius: 6px; }
 .tab.active { background: var(--card); color: var(--primary); }
 .panel { display: none; }
 .panel.active { display: block; }
-textarea, input[type=text] {
-  width: 100%; background: var(--input); color: var(--text); border: 2px solid var(--border);
-  border-radius: 10px; padding: 12px; font: inherit;
-}
-textarea:focus, input[type=text]:focus { outline: none; border-color: var(--primary); }
-.drop {
-  border: 2px dashed var(--border); border-radius: 10px; padding: 22px; text-align: center;
-  color: var(--muted); cursor: pointer; background: var(--input);
-}
-.drop:hover { border-color: var(--primary); color: var(--primary); }
-.preview { text-align: center; margin-top: 10px; }
-.preview img { max-width: 100%; max-height: 220px; border-radius: 10px; border: 1px solid var(--border); }
-.samples { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
-.sample-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-.chip {
-  border: 1px solid var(--border); background: var(--input); color: var(--text);
-  border-radius: 999px; padding: 6px 12px; cursor: pointer; font-size: 0.8rem;
-}
+
+textarea, input[type="text"] { width: 100%; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 15px; font-size: 1rem; resize: vertical; }
+textarea:focus, input[type="text"]:focus { outline: none; border-color: var(--primary); }
+
+.btn { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weight: bold; font-size: 1rem; cursor: pointer; display: flex; justify-content: center; gap: 8px; margin-top: 15px; }
+.btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; box-shadow: 0 4px 15px rgba(14,165,233,0.3); }
+.btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+
+.sample-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.chip { background: var(--input); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; cursor: pointer; }
 .chip:hover { border-color: var(--primary); color: var(--primary); }
-.full { width: 100%; margin-top: 14px; }
-.hidden { display: none !important; }
 
 /* RESULTS */
-.result {
-  border-radius: 14px; padding: 22px; text-align: center; color: #fff; margin-bottom: 12px;
-}
-.result.high { background: linear-gradient(135deg,#dc2626,#7f1d1d); }
-.result.medium { background: linear-gradient(135deg,#d97706,#78350f); }
-.result.low { background: linear-gradient(135deg,#059669,#064e3b); }
-.score {
-  width: 84px; height: 84px; margin: 0 auto 10px; border-radius: 50%;
-  display: grid; place-items: center; font-size: 1.8rem; font-weight: 900;
-  background: rgba(255,255,255,.18); border: 3px solid rgba(255,255,255,.35);
-}
-.flag {
-  display: flex; gap: 10px; padding: 12px; border-radius: 10px; margin-bottom: 8px;
-  background: var(--input); border-left: 4px solid var(--primary);
-}
+.result-banner { padding: 25px; border-radius: 12px; text-align: center; color: white; margin-bottom: 20px; }
+.result-banner.high { background: linear-gradient(135deg, #b91c1c, #7f1d1d); }
+.result-banner.medium { background: linear-gradient(135deg, #d97706, #78350f); }
+.result-banner.low { background: linear-gradient(135deg, #047857, #064e3b); }
+.score-circle { width: 80px; height: 80px; background: rgba(255,255,255,0.2); border: 3px solid rgba(255,255,255,0.4); border-radius: 50%; display: grid; place-items: center; font-size: 2rem; font-weight: 900; margin: 0 auto 10px; }
+
+.flag { display: flex; gap: 12px; background: var(--input); padding: 15px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid; }
 .flag.high { border-left-color: var(--danger); }
 .flag.medium { border-left-color: var(--warning); }
 .flag.low { border-left-color: var(--success); }
-.muted { color: var(--muted); font-size: 0.85rem; }
-.actions-box { background: var(--input); border-radius: 10px; padding: 12px; }
-.actions-box p { margin: 6px 0; font-size: 0.9rem; }
+.flag b { font-size: 1rem; color: var(--text); display: block; margin-bottom: 3px; }
+.flag span { font-size: 0.85rem; color: var(--muted); }
 
-/* COMPARE / DASH / REPORT */
-.split { display: grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: 12px; }
-.stats { display: grid; grid-template-columns: repeat(auto-fit,minmax(140px,1fr)); gap: 10px; }
-.stat { background: var(--input); border: 1px solid var(--border); border-radius: 12px; padding: 16px; text-align: center; }
-.stat b { display:block; font-size: 1.8rem; color: var(--primary); }
-.alert {
-  border-left: 5px solid var(--danger); background: rgba(248,113,113,.08);
-  border-radius: 12px; padding: 16px;
-}
-footer { text-align: center; color: var(--muted); padding: 24px 12px; border-top: 1px solid var(--border); font-size: 0.85rem; }
+.hidden { display: none !important; }
 </style>
 </head>
 <body>
-<div class="banner">🛡️ AWARENESS AID: Educational prototype only. Never enter real banking credentials or OTPs.</div>
+
+<div class="banner">🛡️ EDUCATIONAL PROTOTYPE. NEVER ENTER REAL BANKING OTMS OR PINS.</div>
 
 <nav class="nav">
   <div class="nav-inner">
-    <div class="brand" onclick="go('home')">
-      <div class="logo">🛡️</div>
-      <b>CYBER SHIELD</b>
-    </div>
+    <div class="brand" onclick="go('analyzer')"><span>🛡️</span> CYBER SHIELD</div>
     <div class="menu">
-      <button id="nav-home" class="active" onclick="go('home')">Home</button>
-      <button id="nav-analyzer" onclick="go('analyzer')">Analyze</button>
-      <button id="nav-compare" onclick="go('compare')">Compare</button>
-      <button id="nav-dashboard" onclick="go('dashboard')">Dashboard</button>
-      <button id="nav-report" onclick="go('report')">Report (1930)</button>
+      <button id="nav-analyzer" class="active" onclick="go('analyzer')">Analyze Content</button>
+      <button id="nav-report" onclick="go('report')">Helpline (1930)</button>
     </div>
-    <button class="theme-btn" onclick="toggleTheme()">☀️ / 🌙</button>
   </div>
 </nav>
 
-<!-- HOME -->
-<section id="home" class="page active">
-  <div class="hero">
-    <canvas id="matrix"></canvas>
-    <div class="hero-content">
-      <div class="hero-icon">🛡️</div>
-      <h1>CYBER SHIELD</h1>
-      <div class="tags">
-        <span class="tag t1">PAUSE</span><span class="dot">•</span>
-        <span class="tag t2">CHECK</span><span class="dot">•</span>
-        <span class="tag t3">PROTECT</span>
-      </div>
-      <p>Your first-line scam awareness assistant. Evaluate suspicious SMS, UPI requests, job offers, and risky links before you act.</p>
-      <div class="hero-actions">
-        <button class="btn btn-primary" onclick="go('analyzer')">🔍 Start Analyzing</button>
-        <button class="btn btn-outline" onclick="go('report')">📞 Helpline 1930</button>
-      </div>
-      <div class="features">
-        <div class="feature"><div>🧠</div><b>SMART DETECTION</b><span>Rule-based scam pattern engine</span></div>
-        <div class="feature"><div>🔒</div><b>100% PRIVATE</b><span>Everything runs in your browser</span></div>
-        <div class="feature"><div>⚡</div><b>INSTANT SCORE</b><span>Immediate 0–100 risk rating</span></div>
-        <div class="feature"><div>🚨</div><b>DIRECT HELP</b><span>Official reporting guidance</span></div>
-      </div>
+<!-- ANALYZER PAGE -->
+<div id="analyzer" class="page active">
+  <div class="title-box">
+    <h2>PAUSE • CHECK • PROTECT</h2>
+    <p>Select the situation and paste the message, link, or phone number below.</p>
+  </div>
+
+  <div class="card" id="step1">
+    <h3>1. What is the situation?</h3>
+    <div class="grid-cat">
+      <div class="cat active" data-cat="sms" onclick="pickCat(this)"><i>💬</i> SMS / WhatsApp</div>
+      <div class="cat" data-cat="call" onclick="pickCat(this)"><i>📞</i> Phone Call</div>
+      <div class="cat" data-cat="upi" onclick="pickCat(this)"><i>📱</i> UPI Request</div>
+      <div class="cat" data-cat="job" onclick="pickCat(this)"><i>💼</i> Job / Task Offer</div>
+      <div class="cat" data-cat="parcel" onclick="pickCat(this)"><i>📦</i> Customs / Parcel</div>
     </div>
   </div>
-</section>
 
-<div class="wrap">
-  <!-- ANALYZER -->
-  <section id="analyzer" class="page">
-    <div class="center">
-      <h2>Analyze Suspicious Content</h2>
-      <p>Select a scenario, then submit a message, screenshot, or link.</p>
+  <div class="card" id="step2">
+    <h3>2. Submit Evidence</h3>
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('text', this)">Text / Number</button>
+      <button class="tab" onclick="showTab('url', this)">Web Link</button>
+    </div>
+    
+    <div id="tab-text" class="panel active">
+      <textarea id="textInput" rows="5" placeholder="Paste the exact message, or a suspicious phone number (e.g. +92 300...)."></textarea>
+    </div>
+    <div id="tab-url" class="panel">
+      <input id="urlInput" type="text" placeholder="e.g. http://sbi-kyc-update.xyz">
     </div>
 
-    <div class="card">
-      <h3>Step 1: Choose Scenario</h3>
-      <div class="grid" id="scenarioGrid">
-        <div class="cat active" data-cat="sms" onclick="pickCat(this)"><span class="ico">💬</span>SMS / WhatsApp</div>
-        <div class="cat" data-cat="call" onclick="pickCat(this)"><span class="ico">📞</span>Phone Call</div>
-        <div class="cat" data-cat="upi" onclick="pickCat(this)"><span class="ico">📱</span>UPI Request</div>
-        <div class="cat" data-cat="job" onclick="pickCat(this)"><span class="ico">💼</span>Job Offer</div>
-        <div class="cat" data-cat="investment" onclick="pickCat(this)"><span class="ico">📈</span>Investment</div>
-        <div class="cat" data-cat="app" onclick="pickCat(this)"><span class="ico">📲</span>App Download</div>
+    <div style="margin-top: 15px;">
+      <span style="color:var(--muted); font-size:0.85rem;">Try a realistic demo:</span>
+      <div class="sample-row">
+        <button class="chip" onclick="loadSample('parcel')">📦 FedEx/Customs Call</button>
+        <button class="chip" onclick="loadSample('upi')">📱 UPI Receive Scam</button>
+        <button class="chip" onclick="loadSample('job')">💼 YouTube Like Task</button>
+        <button class="chip" onclick="loadSample('intl')">📞 +92 WhatsApp Call</button>
       </div>
     </div>
 
-    <div class="card">
-      <h3>Step 2: Submit Content</h3>
-      <div class="tabs">
-        <button class="tab active" onclick="showTab('text', this)">Text Message</button>
-        <button class="tab" onclick="showTab('image', this)">Upload Screenshot</button>
-        <button class="tab" onclick="showTab('url', this)">Web Link (URL)</button>
-      </div>
+    <button class="btn btn-primary" onclick="runAnalysis()">🔍 Analyze Risk</button>
+  </div>
 
-      <div id="tab-text" class="panel active">
-        <textarea id="textInput" rows="5" placeholder="Paste suspicious message here..."></textarea>
-      </div>
-
-      <div id="tab-image" class="panel">
-        <div class="drop" onclick="document.getElementById('fileInput').click()">
-          📁 Click to upload screenshot
-          <input id="fileInput" type="file" accept="image/*" hidden onchange="onImage(event)">
-        </div>
-        <div id="imgBox" class="preview hidden">
-          <img id="imgPreview" alt="preview">
-          <div style="margin-top:8px;"><button class="chip" onclick="clearImage()">Remove Image</button></div>
-        </div>
-      </div>
-
-      <div id="tab-url" class="panel">
-        <input id="urlInput" type="text" placeholder="Paste link e.g. http://sbi-kyc-update.xyz/verify">
-      </div>
-
-      <div class="samples">
-        <div class="muted">Try a demo sample:</div>
-        <div class="sample-row">
-          <button class="chip" onclick="loadSample('prize')">🎁 Prize Scam</button>
-          <button class="chip" onclick="loadSample('bank')">🏦 Bank KYC Scam</button>
-          <button class="chip" onclick="loadSample('job')">💼 Job Scam</button>
-          <button class="chip" onclick="loadSample('investment')">📈 Investment Scam</button>
-          <button class="chip" onclick="loadSample('legit')">✅ Legitimate SMS</button>
-        </div>
-      </div>
-
-      <button class="btn btn-primary full" onclick="analyze()">🔍 Analyze Now</button>
+  <!-- RESULTS SECTION -->
+  <div id="resultCard" class="card hidden">
+    <div id="resultBanner"></div>
+    <div id="flagsOut"></div>
+    <div style="background:var(--input); padding: 15px; border-radius: 8px; margin-top: 15px;">
+      <h3 style="margin-bottom: 10px; color: var(--success);">✅ Immediate Safe Actions</h3>
+      <p style="font-size: 0.9rem; margin-bottom: 5px;">❌ Do <b>NOT</b> share OTP, PIN, CVV, or passwords.</p>
+      <p style="font-size: 0.9rem; margin-bottom: 5px;">❌ Do <b>NOT</b> click links or install apps (AnyDesk/APK) they suggest.</p>
+      <p style="font-size: 0.9rem;">✅ <b>Verify independently</b> by calling the official number from your bank's website or app.</p>
     </div>
-
-    <div id="resultCard" class="card hidden">
-      <div id="resultBanner"></div>
-      <div id="flagsOut"></div>
-      <div id="actionsOut"></div>
-      <button class="btn btn-outline full" onclick="resetAnalyze()">🔄 Analyze Another</button>
-    </div>
-  </section>
-
-  <!-- COMPARE -->
-  <section id="compare" class="page">
-    <div class="center"><h2>Compare Messages</h2><p>Compare two messages side by side.</p></div>
-    <div class="split">
-      <div class="card">
-        <h3>Message A</h3>
-        <textarea id="compA" rows="5" placeholder="Paste message A"></textarea>
-        <div id="scoreA" style="margin-top:8px;font-weight:700;"></div>
-      </div>
-      <div class="card">
-        <h3>Message B</h3>
-        <textarea id="compB" rows="5" placeholder="Paste message B"></textarea>
-        <div id="scoreB" style="margin-top:8px;font-weight:700;"></div>
-      </div>
-    </div>
-    <div style="display:flex;gap:10px;justify-content:center;margin-top:8px;flex-wrap:wrap;">
-      <button class="btn btn-primary" onclick="compareMsgs()">Compare Now</button>
-      <button class="btn btn-outline" onclick="loadCompareDemo()">Load Demo Pair</button>
-    </div>
-  </section>
-
-  <!-- DASHBOARD -->
-  <section id="dashboard" class="page">
-    <div class="center"><h2>Session Dashboard</h2><p>Local anonymous stats for this browser session.</p></div>
-    <div class="stats">
-      <div class="stat"><b id="sTotal">0</b>Total Scans</div>
-      <div class="stat"><b id="sHigh" style="color:var(--danger)">0</b>High Risk</div>
-      <div class="stat"><b id="sMed" style="color:var(--warning)">0</b>Medium Risk</div>
-      <div class="stat"><b id="sLow" style="color:var(--success)">0</b>Low Risk</div>
-    </div>
-  </section>
-
-  <!-- REPORT -->
-  <section id="report" class="page">
-    <div class="center"><h2>Report & Get Help</h2><p>Verified official channels in India.</p></div>
-    <div class="card alert">
-      <h3 style="color:var(--danger)">💰 Lost money to cyber fraud?</h3>
-      <p style="margin:8px 0 10px;">Act quickly. Early reporting improves chances of freezing funds.</p>
-      <ul style="margin-left:18px; line-height:1.8;">
-        <li>Call <b>1930</b> — National Cyber Fraud Helpline (24/7)</li>
-        <li>Report at <b>cybercrime.gov.in</b></li>
-        <li>Call your bank using the number on your card/app (not from the suspicious message)</li>
-      </ul>
-    </div>
-  </section>
+    <button class="btn btn-outline" onclick="resetAnalyze()">🔄 Analyze Another</button>
+  </div>
 </div>
 
-<footer>CYBER SHIELD — PAUSE • CHECK • PROTECT | Emergency Helpline: <b>1930</b></footer>
+<!-- REPORT PAGE -->
+<div id="report" class="page">
+  <div class="title-box">
+    <h2>Report Cyber Fraud</h2>
+    <p>Verified helplines to stop financial loss.</p>
+  </div>
+  <div class="card" style="border-left: 5px solid var(--danger);">
+    <h3 style="color:var(--danger)">🚨 Lost money? Act Immediately!</h3>
+    <p style="margin:10px 0; color:var(--muted);">If money was deducted from your account, speed is critical to freeze the fraudster's account.</p>
+    <ul style="margin-left: 20px; line-height: 2;">
+      <li>Call <b>1930</b> — India's National Cyber Fraud Helpline (24/7).</li>
+      <li>File an online report at <b>cybercrime.gov.in</b>.</li>
+      <li>Call your bank using the official number on the back of your card to block the card.</li>
+    </ul>
+  </div>
+</div>
 
 <script>
-const samples = {
-  prize: "🎉 CONGRATULATIONS! You won ₹50,00,000 in Amazon Lucky Draw! Click http://amaz0n-prize.xyz/claim to claim. Pay ₹999 registration fee via PhonePe to unlock reward. Send OTP to verify.",
-  bank: "URGENT: Dear Customer, your SBI account is suspended due to pending KYC update. Click http://sbi-kyc-update.tk/verify to update Aadhaar & PAN details immediately or account will be closed in 2 hours.",
-  job: "Work from Home Job Opportunity! Earn ₹5,000-₹15,000 daily doing simple typing work. No experience required. Registration fee ₹1,500 (refundable). Contact WhatsApp 9876543210.",
-  investment: "📈 GUARANTEED RETURNS! Make ₹1,00,000 daily! Join our trading group. Guaranteed 500% profit in 30 days. Risk-free investment via Bitcoin/UPI. Invest ₹10,000 now!",
-  legit: "Your order #AMZ-87234 has been dispatched via BlueDart. Expected delivery by Tomorrow. Track your package on the official Amazon App."
-};
-
-const rules = [
-  { re: /(won|winner|prize|reward|lucky draw|cash prize|lott[eo]ry|scratch card|jeeto|gold)/i, score: 25, title: "Prize / Reward Claim", desc: "Unsolicited prize offers are commonly used to create excitement and lower caution." },
-  { re: /(urgent|immediately|within \d+ hours|account.*block|suspend|deactivat|final warning)/i, score: 25, title: "Urgency / Threat Pressure", desc: "Fake deadlines push you to act before verifying through official channels." },
-  { re: /(pay|fee|registration charge|processing fee|advance payment|send money)/i, score: 25, title: "Upfront Payment Demand", desc: "Real prizes/jobs do not require you to pay money to receive benefits." },
-  { re: /(otp|password|pin|cvv|aadhaar|pan card|bank details)/i, score: 30, title: "Credential Request", desc: "Banks and genuine orgs never ask for OTP/PIN/password by message." },
-  { re: /(https?:\/\/[^\s]*(\.xyz|\.tk|\.top|\.click|bit\.ly|tinyurl|amaz0n|sbi-)|http:\/\/)/i, score: 25, title: "Suspicious Link", desc: "Risky domains, shorteners, or brand lookalikes often hide phishing pages." },
-  { re: /(guaranteed return|100% profit|double your money|risk-free)/i, score: 25, title: "Unrealistic Returns", desc: "No genuine investment can guarantee high risk-free profits." }
-];
-
+// SCENARIO & TAB STATE
 let currentCat = "sms";
-let hasImage = false;
-let stats = { total: 0, high: 0, medium: 0, low: 0 };
 
 function go(id) {
   document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
   document.querySelectorAll(".menu button").forEach(b => b.classList.remove("active"));
   document.getElementById(id).classList.add("active");
-  const nav = document.getElementById("nav-" + id);
-  if (nav) nav.classList.add("active");
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  document.getElementById("nav-" + id).classList.add("active");
+  window.scrollTo(0,0);
 }
 
 function pickCat(el) {
@@ -394,167 +181,171 @@ function pickCat(el) {
   currentCat = el.getAttribute("data-cat");
 }
 
-function showTab(name, btn) {
+function showTab(id, el) {
   document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
   document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
-  btn.classList.add("active");
-  document.getElementById("tab-" + name).classList.add("active");
+  el.classList.add("active");
+  document.getElementById("tab-" + id).classList.add("active");
 }
+
+// REALISTIC SAMPLES
+const samples = {
+  parcel: { cat: "parcel", text: "This is FedEx. Your parcel to Taiwan contains illegal passports and drugs. The CBI has issued an arrest warrant. Press 1 to speak to the Customs Officer immediately." },
+  upi: { cat: "upi", text: "You have received ₹5000 cashback from PhonePe. Please enter your UPI PIN to approve the request and receive the money in your bank account." },
+  job: { cat: "job", text: "Part time WFH! Earn ₹2000 to ₹5000 daily just by liking YouTube videos and subscribing to channels. Send ₹1000 registration fee to start earning." },
+  intl: { cat: "call", text: "+92 345 1234567\nMissed voice call. WhatsApp message: 'Hello Sir, KBC lottery winner. Call back on WhatsApp to claim 25 Lakhs.'" }
+};
 
 function loadSample(key) {
-  document.getElementById("textInput").value = samples[key];
-  // force text tab active
-  const textBtn = document.querySelectorAll(".tab")[0];
-  showTab("text", textBtn);
+  const s = samples[key];
+  // Auto-switch to the correct category based on the sample
+  const catBtn = document.querySelector(`.cat[data-cat="${s.cat}"]`);
+  if (catBtn) pickCat(catBtn);
+  
+  document.getElementById("textInput").value = s.text;
+  showTab("text", document.querySelectorAll(".tab")[0]);
 }
 
-function onImage(e) {
-  const file = e.target.files && e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    document.getElementById("imgPreview").src = ev.target.result;
-    document.getElementById("imgBox").classList.remove("hidden");
-    hasImage = true;
-  };
-  reader.readAsDataURL(file);
-}
-
-function clearImage() {
-  document.getElementById("fileInput").value = "";
-  document.getElementById("imgBox").classList.add("hidden");
-  hasImage = false;
-}
-
-function getActiveText() {
-  const active = document.querySelector(".panel.active").id;
-  if (active === "tab-text") return document.getElementById("textInput").value.trim();
-  if (active === "tab-url") return document.getElementById("urlInput").value.trim();
-  if (active === "tab-image") {
-    if (hasImage) return "reward scratch card gold offer prize claim pay registration fee winner urgent money otp";
-    return document.getElementById("textInput").value.trim();
-  }
-  return "";
-}
-
-function scoreText(text) {
+// ==========================================
+// SCENARIO-AWARE AI SCORING ENGINE
+// ==========================================
+function analyzeText(text, category) {
   let score = 0;
-  const flags = [];
-  rules.forEach(r => {
-    if (r.re.test(text)) {
-      score += r.score;
-      flags.push(r);
-    }
+  let flags = [];
+  
+  // Normalize text
+  let txt = text.toLowerCase();
+
+  // 1. UNIVERSAL RULES (Apply to everything)
+  const universal = [
+    { re: /(otp|password|pin|cvv|aadhaar|pan card|bank details)/, pts: 40, title: "Credential Theft", desc: "Requests for PINs, OTPs, or passwords. Genuine organizations never ask for these." },
+    { re: /(urgent|immediately|within \d+ hours|block|suspend|deactivat|final warning)/, pts: 30, title: "Urgency / Panic", desc: "Creates artificial panic so you act quickly without thinking." },
+    { re: /(won|winner|prize|reward|lucky draw|cash prize|lott[eo]ry|congratulations)/, pts: 30, title: "Too-Good-To-Be-True", desc: "Unsolicited prize offers are standard bait for scams." },
+    { re: /(https?:\/\/[^\s]*(\.xyz|\.tk|\.top|\.click|bit\.ly|tinyurl|amaz0n|sbi-)|http:\/\/)/, pts: 35, title: "Suspicious Link", desc: "Link uses a risky domain extension or hides the real destination." }
+  ];
+
+  universal.forEach(r => {
+    if (r.re.test(txt)) { score += r.pts; flags.push({ title: r.title, desc: r.desc, level: r.pts >= 35 ? "high" : "medium" }); }
   });
-  score = Math.min(100, score);
-  const level = score >= 60 ? "high" : score >= 30 ? "medium" : "low";
-  return { score, level, flags };
+
+  // 2. SCENARIO-SPECIFIC RULES (High accuracy)
+  
+  // A. PHONE CALL SCAM RULES
+  if (category === "call" || category === "parcel") {
+    if (/(cbi|customs|fedex|dhl|narcotics|police|trai|rbi|arrest|warrant|illegal parcel)/.test(txt)) {
+      score += 60;
+      flags.push({ title: "Authority Impersonation Scam", desc: "Callers pretending to be Police/Customs/FedEx to threaten you with fake arrest warrants or illegal parcels.", level: "high" });
+    }
+    if (/(anydesk|teamviewer|quicksupport|screen share|download.*app)/.test(txt)) {
+      score += 60;
+      flags.push({ title: "Remote Access Takeover", desc: "Asking you to download screen-sharing apps allows them to see your banking passwords and steal money.", level: "high" });
+    }
+    if (/(?:\+|00)(92|994|84|62|234|223|60)/.test(txt)) {
+      score += 50;
+      flags.push({ title: "High-Risk International Number", desc: "Calls originating from country codes like +92 (Pak), +994, +84 etc., are very frequently used by scam syndicates.", level: "high" });
+    }
+  }
+
+  // B. UPI SCAM RULES
+  if (category === "upi") {
+    if (/(receive|collect|cashback|approve|enter pin)/.test(txt)) {
+      score += 60;
+      flags.push({ title: "Reverse UPI Scam", desc: "CRITICAL: You NEVER need to enter your UPI PIN to RECEIVE money. Entering a PIN always DEDUCTS money from your account.", level: "high" });
+    }
+  }
+
+  // C. JOB / TASK SCAM RULES
+  if (category === "job") {
+    if (/(youtube|telegram|instagram).*(like|subscribe|review).*(task|salary|earn)/.test(txt)) {
+      score += 50;
+      flags.push({ title: "Task / Like-Subscribe Scam", desc: "Scammers pay tiny amounts initially for 'liking videos', then demand large 'investments' to unlock your funds.", level: "high" });
+    }
+    if (/(pay|fee|registration charge|processing fee|advance payment|security deposit)/.test(txt)) {
+      score += 50;
+      flags.push({ title: "Advance Fee Fraud", desc: "Genuine employers DO NOT ask candidates to pay money for registration, laptops, or training.", level: "high" });
+    }
+  }
+
+  // D. INVESTMENT SCAM RULES
+  if (category === "investment") {
+    if (/(guaranteed|100% profit|double|risk-free|sure shot|crypto.*daily)/.test(txt)) {
+      score += 50;
+      flags.push({ title: "Ponzi / Fake Investment", desc: "Promising guaranteed high returns with zero risk is a mathematical impossibility and a definitive sign of fraud.", level: "high" });
+    }
+  }
+
+  // Final Scoring Logic
+  if (score > 100) score = 100;
+  let riskLevel = score >= 65 ? "high" : score >= 35 ? "medium" : "low";
+
+  // If score is 0 but it's very short, warn them.
+  if (score === 0 && txt.length < 15) {
+    flags.push({ title: "Insufficient Information", desc: "The text is too short to fully analyze. Still remain cautious.", level: "low" });
+  }
+
+  return { score, level: riskLevel, flags };
 }
 
-function analyze() {
-  const text = getActiveText();
-  if (!text || text.length < 3) {
-    alert("Please paste a message, enter a URL, or upload an image first.");
-    return;
-  }
-  const result = scoreText(text);
+// ==========================================
+// UI EXECUTION
+// ==========================================
+function runAnalysis() {
+  const activeTab = document.querySelector(".panel.active").id;
+  let text = "";
+  
+  if (activeTab === "tab-text") text = document.getElementById("textInput").value.trim();
+  else text = document.getElementById("urlInput").value.trim();
 
-  stats.total++;
-  stats[result.level]++;
-  document.getElementById("sTotal").textContent = stats.total;
-  document.getElementById("sHigh").textContent = stats.high;
-  document.getElementById("sMed").textContent = stats.medium;
-  document.getElementById("sLow").textContent = stats.low;
+  if (!text) { alert("Please paste the message or link first."); return; }
 
+  // RUN AI ENGINE
+  const res = analyzeText(text, currentCat);
+
+  // UPDATE UI
   const banner = document.getElementById("resultBanner");
-  banner.className = "result " + result.level;
+  banner.className = `result-banner ${res.level}`;
   banner.innerHTML = `
-    <div class="score">${result.score}</div>
-    <h3>${result.level.toUpperCase()} RISK DETECTED</h3>
-    <p style="margin-top:6px;">${
-      result.level === "high" ? "🚨 Strong scam indicators found." :
-      result.level === "medium" ? "⚠️ Suspicious patterns detected. Verify carefully." :
-      "✅ Low risk indicators. Still verify independently."
-    }</p>`;
+    <div class="score-circle">${res.score}</div>
+    <h2 style="margin-bottom:5px;">${res.level.toUpperCase()} RISK DETECTED</h2>
+    <p>${
+      res.level === "high" ? "🚨 Highly likely to be a scam. Do not proceed." : 
+      res.level === "medium" ? "⚠️ Contains suspicious elements. Verify carefully." : 
+      "✅ No obvious scam triggers found, but always verify."
+    }</p>
+  `;
 
-  let flagsHtml = "<h3 style='margin:8px 0;'>Red Flags</h3>";
-  if (result.flags.length) {
-    flagsHtml += result.flags.map(f => `
-      <div class="flag ${result.level}">
-        <div>🔴</div>
-        <div><b>${f.title}</b><div class="muted">${f.desc}</div></div>
-      </div>`).join("");
+  let flagsHtml = "";
+  if (res.flags.length > 0) {
+    flagsHtml = res.flags.map(f => `
+      <div class="flag ${f.level}">
+        <div style="font-size:1.2rem;">${f.level === 'high' ? '🔴' : f.level === 'medium' ? '🟡' : 'ℹ️'}</div>
+        <div><b>${f.title}</b><span>${f.desc}</span></div>
+      </div>
+    `).join("");
   } else {
-    flagsHtml += `<div class="flag low"><div>ℹ️</div><div><b>No major triggers matched</b><div class="muted">Still verify through official channels.</div></div></div>`;
+    flagsHtml = `
+      <div class="flag low">
+        <div style="font-size:1.2rem;">🛡️</div>
+        <div><b>No matches</b><span>The system didn't detect known patterns. Stay alert anyway.</span></div>
+      </div>`;
   }
+  
   document.getElementById("flagsOut").innerHTML = flagsHtml;
-
-  document.getElementById("actionsOut").innerHTML = `
-    <h3 style="margin:12px 0 8px;">Recommended Actions</h3>
-    <div class="actions-box">
-      <p>❌ Do NOT share OTP, PIN, password, or CVV.</p>
-      <p>❌ Do NOT pay registration/processing fees to claim rewards or jobs.</p>
-      <p>❌ Do NOT click unknown links. Type official websites yourself.</p>
-      <p>✅ Verify using official app/website or the number on your bank card.</p>
-      <p>✅ If money was sent, call <b>1930</b> immediately.</p>
-    </div>`;
-
+  
+  document.getElementById("step1").classList.add("hidden");
+  document.getElementById("step2").classList.add("hidden");
   document.getElementById("resultCard").classList.remove("hidden");
-  document.getElementById("resultCard").scrollIntoView({ behavior: "smooth", block: "start" });
+  window.scrollTo(0,0);
 }
 
 function resetAnalyze() {
   document.getElementById("textInput").value = "";
   document.getElementById("urlInput").value = "";
-  clearImage();
   document.getElementById("resultCard").classList.add("hidden");
+  document.getElementById("step1").classList.remove("hidden");
+  document.getElementById("step2").classList.remove("hidden");
+  window.scrollTo(0,0);
 }
-
-function compareMsgs() {
-  const a = document.getElementById("compA").value.trim();
-  const b = document.getElementById("compB").value.trim();
-  if (!a || !b) { alert("Enter text in both boxes."); return; }
-  const ra = scoreText(a), rb = scoreText(b);
-  document.getElementById("scoreA").textContent = `Risk Score: ${ra.score}/100 (${ra.level})`;
-  document.getElementById("scoreB").textContent = `Risk Score: ${rb.score}/100 (${rb.level})`;
-}
-
-function loadCompareDemo() {
-  document.getElementById("compA").value = samples.bank;
-  document.getElementById("compB").value = samples.legit;
-  document.getElementById("scoreA").textContent = "";
-  document.getElementById("scoreB").textContent = "";
-}
-
-function toggleTheme() { document.body.classList.toggle("light"); }
-
-// Matrix background (safe)
-(function(){
-  try {
-    const c = document.getElementById("matrix");
-    if (!c) return;
-    const ctx = c.getContext("2d");
-    function resize(){ c.width = c.parentElement.clientWidth; c.height = c.parentElement.clientHeight; }
-    resize(); window.addEventListener("resize", resize);
-    const chars = "01CYBERSHIELD"; const size = 14;
-    let cols = Math.floor(c.width/size) || 20;
-    let drops = Array(cols).fill(1);
-    setInterval(() => {
-      ctx.fillStyle = "rgba(11,18,32,0.08)";
-      ctx.fillRect(0,0,c.width,c.height);
-      ctx.fillStyle = "#22d3ee";
-      ctx.font = size + "px monospace";
-      cols = Math.floor(c.width/size) || 20;
-      if (drops.length !== cols) drops = Array(cols).fill(1);
-      for (let i=0;i<drops.length;i++){
-        const ch = chars[Math.floor(Math.random()*chars.length)];
-        ctx.fillText(ch, i*size, drops[i]*size);
-        if (drops[i]*size > c.height && Math.random()>0.975) drops[i]=0;
-        drops[i]++;
-      }
-    }, 50);
-  } catch(e) {}
-})();
 </script>
 </body>
 </html>

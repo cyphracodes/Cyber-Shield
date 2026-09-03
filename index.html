@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CYBER SHIELD — Scam-Risk Awareness Assistant</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <title>CYBER SHIELD — Pause. Check. Protect.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ============ CSS VARIABLES & RESET ============ */
         :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
+            --primary: #00d4ff;
+            --primary-dark: #0099cc;
             --primary-light: #dbeafe;
             --secondary: #7c3aed;
+            --accent: #ff006e;
+            --neon-green: #00ff88;
             --danger: #dc2626;
             --danger-light: #fee2e2;
             --warning: #f59e0b;
@@ -21,6 +22,7 @@
             --success-light: #dcfce7;
             --bg: #f0f4ff;
             --bg-card: #ffffff;
+            --bg-dark: #0a0e27;
             --text: #1e293b;
             --text-light: #64748b;
             --border: #e2e8f0;
@@ -30,7 +32,6 @@
             --radius-sm: 8px;
             --radius-lg: 16px;
             --transition: all 0.3s ease;
-            --font-base: 1rem;
         }
 
         body.dark-mode {
@@ -40,52 +41,414 @@
             --text-light: #94a3b8;
             --border: #334155;
             --primary-light: #1e3a5f;
-            --danger-light: #3b1515;
-            --warning-light: #3b2f10;
-            --success-light: #0f2918;
         }
 
-        body.large-text { --font-base: 1.2rem; }
+        body.large-text { font-size: 1.2rem; }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
-            font-size: var(--font-base);
             background: var(--bg);
             color: var(--text);
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        /* DISCLAIMER BANNER */
+        /* ============ ANIMATED HERO ============ */
+        .hero-section {
+            position: relative;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0d1128 100%);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            color: white;
+        }
+
+        /* MATRIX RAIN BACKGROUND CANVAS */
+        #matrixCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.15;
+            z-index: 1;
+        }
+
+        /* FLOATING PARTICLES */
+        .particles-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: floatParticle linear infinite;
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        @keyframes floatParticle {
+            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(-100px) translateX(50px); opacity: 0; }
+        }
+
+        /* GRID BACKGROUND */
+        .cyber-grid {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* HERO CONTENT */
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 900px;
+        }
+
+        /* ANIMATED SHIELD */
+        .hero-shield {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 30px;
+            position: relative;
+            animation: shieldFloat 4s ease-in-out infinite;
+        }
+
+        .hero-shield-inner {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+            box-shadow:
+                0 0 40px rgba(0, 212, 255, 0.5),
+                0 0 80px rgba(124, 58, 237, 0.3),
+                inset 0 0 30px rgba(255,255,255,0.1);
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+
+        .hero-shield::before, .hero-shield::after {
+            content: '';
+            position: absolute;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            animation: rippleRing 3s linear infinite;
+        }
+
+        .hero-shield::before {
+            top: -20px; left: -20px; right: -20px; bottom: -20px;
+        }
+
+        .hero-shield::after {
+            top: -40px; left: -40px; right: -40px; bottom: -40px;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes shieldFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.5), 0 0 80px rgba(124, 58, 237, 0.3); }
+            50% { box-shadow: 0 0 60px rgba(0, 212, 255, 0.8), 0 0 120px rgba(124, 58, 237, 0.5); }
+        }
+
+        @keyframes rippleRing {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(1.5); }
+        }
+
+        /* HERO TITLE */
+        .hero-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            font-weight: 900;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, #00d4ff, #7c3aed, #ff006e);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 5s ease infinite;
+            margin-bottom: 10px;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* TAGLINE */
+        .tagline {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            font-weight: 700;
+            margin: 20px 0 15px;
+            letter-spacing: 4px;
+            flex-wrap: wrap;
+        }
+
+        .tagline-word {
+            display: inline-block;
+            position: relative;
+            padding: 8px 20px;
+            color: var(--primary);
+            text-shadow: 0 0 20px currentColor;
+            animation: wordPulse 3s ease-in-out infinite;
+        }
+
+        .tagline-word:nth-child(1) { color: #00d4ff; animation-delay: 0s; }
+        .tagline-word:nth-child(3) { color: #7c3aed; animation-delay: 0.5s; }
+        .tagline-word:nth-child(5) { color: #00ff88; animation-delay: 1s; }
+
+        .tagline-dot {
+            color: white;
+            opacity: 0.5;
+            animation: dotBlink 1.5s ease-in-out infinite;
+        }
+
+        @keyframes wordPulse {
+            0%, 100% { transform: scale(1); text-shadow: 0 0 20px currentColor; }
+            50% { transform: scale(1.05); text-shadow: 0 0 30px currentColor, 0 0 40px currentColor; }
+        }
+
+        @keyframes dotBlink {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* SUBTITLE */
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: rgba(255,255,255,0.8);
+            margin: 20px 0 30px;
+            font-weight: 300;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-subtitle strong {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* SCAN LINE EFFECT */
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            animation: scanLineMove 4s linear infinite;
+            z-index: 3;
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        @keyframes scanLineMove {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+
+        /* CTA BUTTONS */
+        .hero-cta {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .cta-btn {
+            padding: 14px 32px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+        }
+
+        .cta-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 5px 25px rgba(0, 212, 255, 0.4);
+        }
+
+        .cta-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 35px rgba(0, 212, 255, 0.7);
+        }
+
+        .cta-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid var(--primary);
+        }
+
+        .cta-secondary:hover {
+            background: rgba(0, 212, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        /* STATS BAR */
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-num {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary);
+            text-shadow: 0 0 10px currentColor;
+        }
+
+        .hero-stat-label {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.7);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 5px;
+        }
+
+        /* SCROLL INDICATOR */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 0.85rem;
+            opacity: 0.7;
+            animation: scrollBounce 2s ease-in-out infinite;
+            z-index: 10;
+        }
+
+        @keyframes scrollBounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* FEATURE CARDS */
+        .features-strip {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 40px;
+            max-width: 1000px;
+        }
+
+        .feature-mini-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-mini-card:hover {
+            background: rgba(0, 212, 255, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+        }
+
+        .feature-mini-card i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .feature-mini-card h4 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            color: white;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .feature-mini-card p {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* DISCLAIMER BAR */
         .disclaimer-banner {
             background: linear-gradient(135deg, #1e40af, #7c3aed);
             color: white;
             padding: 10px 20px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
             font-size: 0.85rem;
-        }
-        .disclaimer-content {
-            max-width: 1200px;
-            margin: 0 auto;
             display: flex;
+            justify-content: center;
             align-items: center;
-            justify-content: space-between;
-            gap: 12px;
+            gap: 15px;
         }
 
         /* NAVBAR */
         .navbar {
-            background: var(--bg-card);
-            border-bottom: 1px solid var(--border);
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
             padding: 12px 24px;
             position: sticky;
-            top: 40px;
+            top: 0;
             z-index: 999;
-            box-shadow: var(--shadow);
         }
+
         .nav-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -93,38 +456,49 @@
             align-items: center;
             justify-content: space-between;
         }
-        .nav-brand { display: flex; align-items: center; gap: 12px; }
+
+        .nav-brand { display: flex; align-items: center; gap: 12px; color: white; }
         .shield-icon {
             width: 40px; height: 40px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             border-radius: 10px;
             display: flex; align-items: center; justify-content: center;
             color: white; font-size: 1.2rem;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
         }
-        .nav-brand h1 { font-size: 1.2rem; font-weight: 800; color: var(--primary); }
+        .nav-brand h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem; font-weight: 800;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
         .nav-links { display: flex; gap: 6px; }
         .nav-link {
             padding: 8px 14px;
             border-radius: var(--radius-sm);
             text-decoration: none;
-            color: var(--text-light);
+            color: rgba(255,255,255,0.7);
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             transition: var(--transition);
         }
-        .nav-link:hover, .nav-link.active { background: var(--primary); color: white; }
+        .nav-link:hover, .nav-link.active {
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--primary);
+        }
 
         .nav-controls { display: flex; gap: 6px; }
         .btn-icon {
             width: 36px; height: 36px;
             border-radius: var(--radius-sm);
-            border: 1px solid var(--border);
-            background: var(--bg-card);
-            color: var(--text-light);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            background: transparent;
+            color: rgba(255,255,255,0.8);
             cursor: pointer;
             display: flex; align-items: center; justify-content: center;
         }
-        .btn-icon:hover { background: var(--primary-light); color: var(--primary); }
+        .btn-icon:hover { background: rgba(0, 212, 255, 0.2); }
 
         /* MAIN CONTENT */
         .main-content { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
@@ -135,7 +509,6 @@
         .section-header h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 6px; }
         .section-header p { color: var(--text-light); }
 
-        /* STEP CARDS */
         .step-container {
             background: var(--bg-card);
             border-radius: var(--radius-lg);
@@ -150,14 +523,13 @@
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white; padding: 3px 14px; border-radius: 20px;
             font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+            box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
         }
 
-        /* INCIDENT GRID */
         .incident-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 12px;
-            margin-top: 16px;
+            gap: 12px; margin-top: 16px;
         }
         .incident-btn {
             display: flex; flex-direction: column; align-items: center; gap: 8px;
@@ -169,9 +541,9 @@
         .incident-btn i { font-size: 1.5rem; color: var(--primary); }
         .incident-btn:hover, .incident-btn.selected {
             border-color: var(--primary); background: var(--primary-light); transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.2);
         }
 
-        /* INPUT TABS */
         .input-tabs { display: flex; gap: 6px; margin-bottom: 16px; background: var(--bg); padding: 4px; border-radius: var(--radius-sm); }
         .input-tab {
             flex: 1; padding: 10px; border: none; border-radius: 6px;
@@ -199,20 +571,21 @@
 
         .image-preview img { max-width: 100%; max-height: 250px; border-radius: var(--radius-sm); margin-bottom: 12px; }
 
-        /* BUTTONS */
         .step-actions { display: flex; gap: 12px; margin-top: 20px; }
         .btn-primary, .btn-secondary, .btn-danger {
             padding: 12px 22px; border-radius: var(--radius-sm); border: none;
             font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
             font-size: 0.9rem; transition: var(--transition);
         }
-        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; }
-        .btn-primary:hover { transform: translateY(-1px); opacity: 0.95; }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+        }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0, 212, 255, 0.5); }
         .btn-secondary { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
         .btn-secondary:hover { background: var(--primary-light); color: var(--primary); }
         .btn-danger { background: var(--danger); color: white; }
 
-        /* SAMPLE BUTTONS */
         .sample-messages { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); }
         .sample-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
         .sample-btn {
@@ -221,8 +594,18 @@
         }
         .sample-btn:hover { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
 
-        /* RESULTS */
-        .risk-result { text-align: center; padding: 28px; border-radius: var(--radius-lg); margin-bottom: 20px; color: white; }
+        .risk-result { text-align: center; padding: 28px; border-radius: var(--radius-lg); margin-bottom: 20px; color: white; position: relative; overflow: hidden; }
+        .risk-result::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            background-size: 200% 200%;
+            animation: shimmer 3s linear infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% -200%; }
+            100% { background-position: 200% 200%; }
+        }
         .risk-result.high { background: linear-gradient(135deg, #dc2626, #b91c1c); }
         .risk-result.medium { background: linear-gradient(135deg, #f59e0b, #d97706); }
         .risk-result.low { background: linear-gradient(135deg, #16a34a, #15803d); }
@@ -232,9 +615,10 @@
             background: rgba(255,255,255,0.2); display: flex; flex-direction: column;
             align-items: center; justify-content: center; margin: 0 auto 12px;
             border: 3px solid rgba(255,255,255,0.4);
+            position: relative; z-index: 2;
         }
         .risk-score-number { font-size: 2.2rem; font-weight: 900; }
-        .risk-level { font-size: 1.4rem; font-weight: 800; }
+        .risk-level { font-size: 1.4rem; font-weight: 800; position: relative; z-index: 2; }
 
         .red-flag-item {
             display: flex; gap: 12px; padding: 12px; border-radius: var(--radius-sm);
@@ -251,27 +635,29 @@
 
         .hidden { display: none !important; }
 
-        /* COMPARE SECTION */
         .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .compare-card { background: var(--bg-card); padding: 20px; border-radius: var(--radius); border: 1px solid var(--border); }
 
-        /* DASHBOARD */
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
         .stat-card { background: var(--bg-card); padding: 20px; border-radius: var(--radius); text-align: center; border: 1px solid var(--border); }
         .stat-value { font-size: 2rem; font-weight: 800; color: var(--primary); }
 
-        /* FOOTER */
         footer { text-align: center; padding: 30px; margin-top: 40px; border-top: 1px solid var(--border); color: var(--text-light); font-size: 0.85rem; }
+
+        @media (max-width: 768px) {
+            .compare-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+            .tagline { gap: 10px; letter-spacing: 2px; }
+            .hero-stats { gap: 20px; }
+        }
     </style>
 </head>
 <body>
 
     <!-- DISCLAIMER -->
     <div class="disclaimer-banner">
-        <div class="disclaimer-content">
-            <span><i class="fas fa-shield-alt"></i> <strong>AWARENESS AID:</strong> CYBER SHIELD is an educational prototype. Never enter real banking PINs or OTPs.</span>
-            <button onclick="document.querySelector('.disclaimer-banner').style.display='none'" style="background:none; border:none; color:white; cursor:pointer;"><i class="fas fa-times"></i></button>
-        </div>
+        <i class="fas fa-info-circle"></i>
+        <span><strong>AWARENESS AID:</strong> Educational prototype only. Never enter real banking PINs or OTPs.</span>
     </div>
 
     <!-- NAVBAR -->
@@ -282,10 +668,11 @@
                 <div><h1>CYBER SHIELD</h1></div>
             </div>
             <div class="nav-links">
-                <a href="#" class="nav-link active" onclick="showSection('analyzer')"><i class="fas fa-search"></i> Analyze</a>
-                <a href="#" class="nav-link" onclick="showSection('compare')"><i class="fas fa-columns"></i> Compare</a>
-                <a href="#" class="nav-link" onclick="showSection('dashboard')"><i class="fas fa-chart-bar"></i> Dashboard</a>
-                <a href="#" class="nav-link" onclick="showSection('report')"><i class="fas fa-flag"></i> Report (1930)</a>
+                <a href="#" class="nav-link active" onclick="showSection('home', this)"><i class="fas fa-home"></i> Home</a>
+                <a href="#" class="nav-link" onclick="showSection('analyzer', this)"><i class="fas fa-search"></i> Analyze</a>
+                <a href="#" class="nav-link" onclick="showSection('compare', this)"><i class="fas fa-columns"></i> Compare</a>
+                <a href="#" class="nav-link" onclick="showSection('dashboard', this)"><i class="fas fa-chart-bar"></i> Dashboard</a>
+                <a href="#" class="nav-link" onclick="showSection('report', this)"><i class="fas fa-flag"></i> Report</a>
             </div>
             <div class="nav-controls">
                 <button class="btn-icon" onclick="toggleDarkMode()" title="Toggle Dark Mode"><i class="fas fa-moon"></i></button>
@@ -294,17 +681,113 @@
         </div>
     </nav>
 
+    <!-- ============ HERO SECTION (HOME) ============ -->
+    <section id="home" class="section active" style="display:block; padding: 0;">
+        <div class="hero-section">
+            <!-- Matrix Canvas Background -->
+            <canvas id="matrixCanvas"></canvas>
+
+            <!-- Cyber Grid -->
+            <div class="cyber-grid"></div>
+
+            <!-- Floating Particles -->
+            <div class="particles-container" id="particlesContainer"></div>
+
+            <!-- Scan Line -->
+            <div class="scan-line"></div>
+
+            <!-- Main Hero Content -->
+            <div class="hero-content">
+                <div class="hero-shield">
+                    <div class="hero-shield-inner">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                </div>
+
+                <h1 class="hero-title">CYBER SHIELD</h1>
+
+                <div class="tagline">
+                    <span class="tagline-word">PAUSE</span>
+                    <span class="tagline-dot">•</span>
+                    <span class="tagline-word">CHECK</span>
+                    <span class="tagline-dot">•</span>
+                    <span class="tagline-word">PROTECT</span>
+                </div>
+
+                <p class="hero-subtitle">
+                    Your <strong>first-line digital safety assistant</strong> that helps you evaluate suspicious messages, understand red flags, and take immediate protective action against scams and cyber fraud.
+                </p>
+
+                <div class="hero-cta">
+                    <button class="cta-btn cta-primary" onclick="showSectionByName('analyzer')">
+                        <i class="fas fa-search"></i> Start Analyzing
+                    </button>
+                    <button class="cta-btn cta-secondary" onclick="showSectionByName('report')">
+                        <i class="fas fa-phone-alt"></i> Emergency: 1930
+                    </button>
+                </div>
+
+                <!-- Hero Stats -->
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-num" id="counter1">6+</div>
+                        <div class="hero-stat-label">Scam Types</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-num" id="counter2">100%</div>
+                        <div class="hero-stat-label">Local Privacy</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-num" id="counter3">24/7</div>
+                        <div class="hero-stat-label">Awareness</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-num" id="counter4">₹0</div>
+                        <div class="hero-stat-label">Always Free</div>
+                    </div>
+                </div>
+
+                <!-- Feature Cards -->
+                <div class="features-strip">
+                    <div class="feature-mini-card">
+                        <i class="fas fa-brain"></i>
+                        <h4>SMART DETECTION</h4>
+                        <p>AI-powered scam pattern analysis</p>
+                    </div>
+                    <div class="feature-mini-card">
+                        <i class="fas fa-lock"></i>
+                        <h4>100% PRIVATE</h4>
+                        <p>All processing happens locally</p>
+                    </div>
+                    <div class="feature-mini-card">
+                        <i class="fas fa-bolt"></i>
+                        <h4>INSTANT RESULT</h4>
+                        <p>Real-time risk scoring</p>
+                    </div>
+                    <div class="feature-mini-card">
+                        <i class="fas fa-hands-helping"></i>
+                        <h4>ACTION GUIDE</h4>
+                        <p>Verified reporting channels</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="scroll-indicator">
+                <i class="fas fa-chevron-down"></i> SCROLL TO EXPLORE <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </section>
+
     <!-- MAIN CONTAINER -->
     <main class="main-content">
 
-        <!-- SECTION 1: ANALYZER -->
-        <section id="analyzer" class="section active">
+        <!-- SECTION: ANALYZER -->
+        <section id="analyzer" class="section">
             <div class="section-header">
                 <h2><i class="fas fa-search-plus"></i> Analyze Suspicious Content</h2>
                 <p>Select a situation, paste a message, or upload a screenshot to evaluate risk.</p>
             </div>
 
-            <!-- STEP 1: Incident Selection -->
             <div class="step-container" id="step1">
                 <div class="step-badge">Step 1</div>
                 <h3>What type of message or situation is this?</h3>
@@ -318,7 +801,6 @@
                 </div>
             </div>
 
-            <!-- STEP 2: Input Evidence -->
             <div class="step-container hidden" id="step2">
                 <div class="step-badge">Step 2</div>
                 <h3>Submit the suspicious message or image</h3>
@@ -329,355 +811,11 @@
                     <button class="input-tab" onclick="switchTab('url-input', this)"><i class="fas fa-link"></i> Check URL</button>
                 </div>
 
-                <!-- Text Panel -->
                 <div id="text-input" class="input-panel active">
-                    <textarea id="suspiciousText" placeholder="Paste the message here (e.g., 'Congratulations! You won ₹50,00,000. Send ₹999 fee to claim...')" rows="5"></textarea>
+                    <textarea id="suspiciousText" placeholder="Paste the message here..." rows="5"></textarea>
                 </div>
 
-                <!-- Screenshot Panel -->
                 <div id="screenshot-input" class="input-panel">
                     <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
                         <i class="fas fa-cloud-upload-alt"></i>
-                        <p>Click or drag screenshot here to upload</p>
-                        <input type="file" id="fileInput" accept="image/*" style="display:none;" onchange="handleImageUpload(event)">
-                    </div>
-                    <div id="imagePreview" class="image-preview hidden" style="text-align:center; margin-top:10px;">
-                        <img id="previewImg" src="" alt="Screenshot preview">
-                        <br>
-                        <button class="btn-danger" onclick="removeImage()">Remove Image</button>
-                    </div>
-                </div>
-
-                <!-- URL Panel -->
-                <div id="url-input" class="input-panel">
-                    <input type="text" id="suspiciousUrl" placeholder="Paste link (e.g., http://sbi-kyc-update.xyz/verify)">
-                </div>
-
-                <!-- Sample Buttons -->
-                <div class="sample-messages">
-                    <small>Try a pre-loaded sample message:</small>
-                    <div class="sample-grid">
-                        <button class="sample-btn" onclick="loadSample('prize')">🎁 Prize Scam</button>
-                        <button class="sample-btn" onclick="loadSample('bank')">🏦 Bank KYC Scam</button>
-                        <button class="sample-btn" onclick="loadSample('job')">💼 Job Scam</button>
-                        <button class="sample-btn" onclick="loadSample('investment')">📈 Investment Scam</button>
-                        <button class="sample-btn" onclick="loadSample('legitimate')">✅ Legitimate Message</button>
-                    </div>
-                </div>
-
-                <div class="step-actions">
-                    <button class="btn-secondary" onclick="goToStep(1)"><i class="fas fa-arrow-left"></i> Back</button>
-                    <button class="btn-primary" id="analyzeBtn" onclick="runAnalysis()"><i class="fas fa-search"></i> Analyze Now</button>
-                </div>
-            </div>
-
-            <!-- RESULTS CONTAINER -->
-            <div class="step-container hidden" id="resultsContainer">
-                <div id="riskResult"></div>
-                <div id="redFlags" style="margin-bottom:20px;"></div>
-                <div id="immediateActions" style="margin-bottom:20px;"></div>
-                <div class="step-actions">
-                    <button class="btn-secondary" onclick="resetAnalyzer()"><i class="fas fa-redo"></i> Analyze Another</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 2: COMPARE -->
-        <section id="compare" class="section">
-            <div class="section-header">
-                <h2>Compare Two Messages</h2>
-                <p>Compare a suspicious message against a legitimate message.</p>
-            </div>
-            <div class="compare-grid">
-                <div class="compare-card">
-                    <h3>Message A</h3>
-                    <textarea id="compareA" rows="4" placeholder="Paste Message A..."></textarea>
-                    <div id="resA" style="margin-top:10px;"></div>
-                </div>
-                <div class="compare-card">
-                    <h3>Message B</h3>
-                    <textarea id="compareB" rows="4" placeholder="Paste Message B..."></textarea>
-                    <div id="resB" style="margin-top:10px;"></div>
-                </div>
-            </div>
-            <div style="text-align:center; margin-top:20px;">
-                <button class="btn-primary" onclick="runCompare()"><i class="fas fa-balance-scale"></i> Compare Messages</button>
-                <button class="btn-secondary" onclick="loadCompareDemo()">Load Demo Pair</button>
-            </div>
-        </section>
-
-        <!-- SECTION 3: DASHBOARD -->
-        <section id="dashboard" class="section">
-            <div class="section-header">
-                <h2>Awareness Dashboard</h2>
-                <p>Anonymous statistics from this session.</p>
-            </div>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-value" id="statTotal">0</div>
-                    <div>Total Scans</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="statHigh" style="color:var(--danger)">0</div>
-                    <div>High Risk</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="statMedium" style="color:var(--warning)">0</div>
-                    <div>Medium Risk</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="statLow" style="color:var(--success)">0</div>
-                    <div>Low Risk</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 4: REPORT -->
-        <section id="report" class="section">
-            <div class="section-header">
-                <h2>Report Cyber Fraud & Get Help</h2>
-                <p>Verified official reporting helplines in India.</p>
-            </div>
-            <div style="background:var(--danger-light); border-left:50px solid var(--danger); padding:20px; border-radius:var(--radius); margin-bottom:20px;">
-                <h3 style="color:var(--danger);">💰 Lost Money to Fraud?</h3>
-                <p>Act immediately! Speed is critical to freezing bank accounts.</p>
-                <ul style="margin:10px 0 0 20px;">
-                    <li>Call <strong>1930</strong> (National Cyber Fraud Helpline - Available 24/7)</li>
-                    <li>Report online at <strong>cybercrime.gov.in</strong></li>
-                    <li>Contact your bank immediately to block your debit/credit card or account.</li>
-                </ul>
-            </div>
-        </section>
-
-    </main>
-
-    <footer>
-        <p>CYBER SHIELD — Digital Safety Awareness Prototype | Emergency Cyber Helpline: <strong>1930</strong></p>
-    </footer>
-
-    <!-- JS LOGIC ENGINE -->
-    <script>
-        // GLOBAL STATE
-        let selectedIncident = 'sms';
-        let stats = { total: 0, high: 0, medium: 0, low: 0 };
-        let hasImageUploaded = false;
-
-        // SAMPLE DATA
-        const samples = {
-            prize: "🎉 CONGRATULATIONS! You won ₹50,00,000 in Amazon Lucky Draw! Click http://amaz0n-prize.xyz/claim to claim. Pay ₹999 registration fee via PhonePe to unlock reward. Send OTP to verify.",
-            bank: "URGENT: Dear Customer, your SBI account is suspended due to pending KYC update. Click http://sbi-kyc-update.tk/verify to update Aadhaar & PAN details immediately or account will be closed in 2 hours.",
-            job: "Work from Home Job Opportunity! Earn ₹5,000-₹15,000 daily doing simple typing work. No experience required. Registration fee ₹1,500 (refundable). Contact WhatsApp 9876543210.",
-            investment: "📈 GUARANTEED RETURNS! Make ₹1,00,000 daily! Join our trading group. Guaranteed 500% profit in 30 days. Risk-free investment via Bitcoin/UPI. Invest ₹10,000 now!",
-            legitimate: "Your order #AMZ-87234 has been dispatched via BlueDart. Expected delivery by Tomorrow. Track your package on the official Amazon App."
-        };
-
-        // RULE ENGINE
-        const rules = [
-            { pattern: /(won|winner|prize|reward|lucky draw|cash prize|lott[eo]ry)/i, score: 20, title: "Prize or Lottery Claim", desc: "Promises of free prize money trigger excitement and lower caution." },
-            { pattern: /(urgent|immediately|within \d+ hours|account.*blocked|suspended|deactivated|final warning)/i, score: 25, title: "Urgency & Threat Tactics", desc: "Creates artificial panic to force quick actions before you verify." },
-            { pattern: /(pay|fee|registration charge|processing fee|advance payment|send money)/i, score: 25, title: "Upfront Payment Demand", desc: "Legitimate prizes or job offers NEVER ask you to pay money to receive benefits." },
-            { pattern: /(otp|password|pin|cvv|aadhaar|pan card|bank details)/i, score: 30, title: "Sensitive Credential Request", desc: "Banks and official organizations never ask for OTPs, PINs, or CVVs via message." },
-            { pattern: /(http:\/\/|https?:\/\/[^\s]*(\.xyz|\.tk|\.top|\.click|\.buzz|bit\.ly|tinyurl|amaz0n|sbi-))/i, score: 25, title: "Suspicious or Unverified Web Link", desc: "The link uses a risky domain extension or mimics a popular brand name (typosquatting)." },
-            { pattern: /(guaranteed return|100% profit|double your money|risk-free)/i, score: 25, title: "Unrealistic Financial Promises", desc: "No legitimate investment can guarantee high fixed returns without risk." }
-        ];
-
-        // NAVIGATION
-        function showSection(sectionId) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            document.getElementById(sectionId).classList.add('active');
-            event.target.classList.add('active');
-        }
-
-        function selectIncident(type, btn) {
-            selectedIncident = type;
-            document.querySelectorAll('.incident-btn').forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-            goToStep(2);
-        }
-
-        function goToStep(step) {
-            document.getElementById('step1').classList.toggle('hidden', step !== 1);
-            document.getElementById('step2').classList.toggle('hidden', step !== 2);
-            document.getElementById('resultsContainer').classList.add('hidden');
-        }
-
-        function switchTab(tabId, btn) {
-            document.querySelectorAll('.input-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.input-panel').forEach(p => p.classList.remove('active'));
-            btn.classList.add('active');
-            document.getElementById(tabId).classList.add('active');
-        }
-
-        function loadSample(key) {
-            document.getElementById('suspiciousText').value = samples[key];
-            // Switch to text tab automatically
-            switchTab('text-input', document.querySelectorAll('.input-tab')[0]);
-        }
-
-        function handleImageUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('previewImg').src = e.target.result;
-                    document.getElementById('imagePreview').classList.remove('hidden');
-                    document.querySelector('.upload-zone').classList.add('hidden');
-                    hasImageUploaded = true;
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function removeImage() {
-            document.getElementById('imagePreview').classList.add('hidden');
-            document.querySelector('.upload-zone').classList.remove('hidden');
-            document.getElementById('fileInput').value = '';
-            hasImageUploaded = false;
-        }
-
-        // ANALYSIS RUNNER
-        function runAnalysis() {
-            let activeTab = document.querySelector('.input-panel.active').id;
-            let textToAnalyze = '';
-
-            if (activeTab === 'text-input') {
-                textToAnalyze = document.getElementById('suspiciousText').value;
-            } else if (activeTab === 'url-input') {
-                textToAnalyze = document.getElementById('suspiciousUrl').value;
-            } else if (activeTab === 'screenshot-input') {
-                if (hasImageUploaded) {
-                    textToAnalyze = "Scratch card reward gold offer prize claim urgent call pay registration fee money winner discount offer";
-                } else {
-                    textToAnalyze = document.getElementById('suspiciousText').value;
-                }
-            }
-
-            if (!textToAnalyze || textToAnalyze.trim().length < 4) {
-                alert("Please paste a message, enter a URL, or upload an image first!");
-                return;
-            }
-
-            let score = 0;
-            let detectedFlags = [];
-
-            rules.forEach(rule => {
-                if (rule.pattern.test(textToAnalyze)) {
-                    score += rule.score;
-                    detectedFlags.push(rule);
-                }
-            });
-
-            score = Math.min(100, score);
-            let riskLevel = score >= 60 ? 'high' : score >= 30 ? 'medium' : 'low';
-
-            // UPDATE STATS
-            stats.total++;
-            if (riskLevel === 'high') stats.high++;
-            else if (riskLevel === 'medium') stats.medium++;
-            else stats.low++;
-            updateDashboard();
-
-            // DISPLAY RESULTS
-            displayResults(score, riskLevel, detectedFlags);
-        }
-
-        function displayResults(score, level, flags) {
-            document.getElementById('step2').classList.add('hidden');
-            document.getElementById('resultsContainer').classList.remove('hidden');
-
-            const riskHtml = `
-                <div class="risk-result ${level}">
-                    <div class="risk-score-circle">
-                        <div class="risk-score-number">${score}</div>
-                        <small>SCORE</small>
-                    </div>
-                    <div class="risk-level">${level.toUpperCase()} RISK DETECTED</div>
-                    <p style="margin-top:8px; opacity:0.9;">${level === 'high' ? '🚨 Strong indicators of a scam attempt.' : level === 'medium' ? '⚠️ Caution advised. Contains suspicious triggers.' : '✅ Low risk indicators detected.'}</p>
-                </div>
-            `;
-            document.getElementById('riskResult').innerHTML = riskHtml;
-
-            let flagsHtml = '<h3><i class="fas fa-flag" style="color:var(--danger)"></i> Red Flags Found</h3>';
-            if (flags.length > 0) {
-                flagsHtml += flags.map(f => `
-                    <div class="red-flag-item ${score >= 60 ? 'high-flag' : 'medium-flag'}">
-                        <div>🔴</div>
-                        <div>
-                            <strong>${f.title}</strong>
-                            <p style="font-size:0.85rem; color:var(--text-light); margin-top:2px;">${f.desc}</p>
-                        </div>
-                    </div>
-                `).join('');
-            } else {
-                flagsHtml += `
-                    <div class="red-flag-item low-flag">
-                        <div>ℹ️</div>
-                        <div>
-                            <strong>No immediate scam triggers detected</strong>
-                            <p style="font-size:0.85rem; color:var(--text-light);">However, always independently verify unexpected communications directly with the official brand/bank outlet.</p>
-                        </div>
-                    </div>
-                `;
-            }
-            document.getElementById('redFlags').innerHTML = flagsHtml;
-
-            let actionsHtml = '<h3><i class="fas fa-shield-alt" style="color:var(--success)"></i> Recommended Safe Actions</h3>';
-            actionsHtml += `
-                <div class="action-item">
-                    <div>❌</div>
-                    <div><strong>Do NOT share OTPs, passwords, or PINs</strong><p style="font-size:0.85rem;">No bank or official agent will ever ask for private credentials.</p></div>
-                </div>
-                <div class="action-item">
-                    <div>❌</div>
-                    <div><strong>Do NOT pay upfront processing/registration fees</strong><p style="font-size:0.85rem;">Genuine rewards or jobs do not require initial payments.</p></div>
-                </div>
-                <div class="action-item">
-                    <div>✅</div>
-                    <div><strong>Verify independently</strong><p style="font-size:0.85rem;">Call official customer support numbers printed on your physical card or official app.</p></div>
-                </div>
-            `;
-            document.getElementById('immediateActions').innerHTML = actionsHtml;
-        }
-
-        function resetAnalyzer() {
-            document.getElementById('resultsContainer').classList.add('hidden');
-            document.getElementById('step1').classList.remove('hidden');
-            document.getElementById('suspiciousText').value = '';
-            document.getElementById('suspiciousUrl').value = '';
-            removeImage();
-        }
-
-        // COMPARE LOGIC
-        function runCompare() {
-            let tA = document.getElementById('compareA').value;
-            let tB = document.getElementById('compareB').value;
-
-            if (!tA || !tB) { alert("Please paste text in both boxes!"); return; }
-
-            let scoreA = 0, scoreB = 0;
-            rules.forEach(r => { if (r.pattern.test(tA)) scoreA += r.score; if (r.pattern.test(tB)) scoreB += r.score; });
-
-            document.getElementById('resA').innerHTML = `<strong style="color:${scoreA >= 50 ? 'red' : 'green'}">Risk Score: ${Math.min(100, scoreA)} / 100</strong>`;
-            document.getElementById('resB').innerHTML = `<strong style="color:${scoreB >= 50 ? 'red' : 'green'}">Risk Score: ${Math.min(100, scoreB)} / 100</strong>`;
-        }
-
-        function loadCompareDemo() {
-            document.getElementById('compareA').value = samples.bank;
-            document.getElementById('compareB').value = samples.legitimate;
-        }
-
-        // DASHBOARD
-        function updateDashboard() {
-            document.getElementById('statTotal').textContent = stats.total;
-            document.getElementById('statHigh').textContent = stats.high;
-            document.getElementById('statMedium').textContent = stats.medium;
-            document.getElementById('statLow').textContent = stats.low;
-        }
-
-        // ACCESSIBILITY
-        function toggleDarkMode() { document.body.classList.toggle('dark-mode'); }
-        function toggleLargeText() { document.body.classList.toggle('large-text'); }
-    </script>
-</body>
-</html>
+                        <p>Click 

@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYBER SHIELD — Scam-Risk Awareness Assistant</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Disclaimer Banner -->
+    <div id="disclaimer-banner" class="disclaimer-banner">
+        <div class="disclaimer-content">
+            <i class="fas fa-info-circle"></i>
+            <span><strong>Awareness Aid:</strong> CYBER SHIELD is an educational prototype. It can make mistakes and does NOT replace police, banks, or professional cyber-investigation systems. Never enter real banking credentials, OTPs, or passwords.</span>
+            <button onclick="closeBanner()" class="dismiss-btn" aria-label="Dismiss disclaimer"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <div class="shield-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div>
+                    <h1>CYBER SHIELD</h1>
+                    <span class="nav-subtitle">Scam-Risk Awareness Assistant</span>
+                </div>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <a href="#analyzer" class="nav-link active" data-section="analyzer"><i class="fas fa-search"></i> Analyze</a>
+                <a href="#compare" class="nav-link" data-section="compare"><i class="fas fa-columns"></i> Compare</a>
+                <a href="#dashboard" class="nav-link" data-section="dashboard"><i class="fas fa-chart-bar"></i> Dashboard</a>
+                <a href="#report" class="nav-link" data-section="report"><i class="fas fa-flag"></i> Report</a>
+                <a href="#learn" class="nav-link" data-section="learn"><i class="fas fa-graduation-cap"></i> Learn</a>
+            </div>
+            <div class="nav-controls">
+                <button id="readAloudToggle" class="btn-icon" title="Toggle Read Aloud Mode" aria-label="Toggle read aloud mode">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+                <button id="fontSizeToggle" class="btn-icon" title="Toggle Large Text" aria-label="Toggle large text">
+                    <i class="fas fa-text-height"></i>
+                </button>
+                <button id="darkModeToggle" class="btn-icon" title="Toggle Dark Mode" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- ============ SECTION 1: ANALYZER ============ -->
+        <section id="analyzer" class="section active">
+            <div class="section-header">
+                <h2><i class="fas fa-search-plus"></i> Analyze Suspicious Content</h2>
+                <p>Paste a suspicious message, describe a situation, or upload a screenshot for risk analysis.</p>
+            </div>
+
+            <!-- Step 1: Select Incident Type -->
+            <div class="step-container" id="step1">
+                <div class="step-badge">Step 1</div>
+                <h3>What type of situation are you dealing with?</h3>
+                <div class="incident-grid">
+                    <button class="incident-btn" data-type="sms" aria-label="Suspicious SMS or WhatsApp">
+                        <i class="fas fa-sms"></i>
+                        <span>Suspicious SMS / WhatsApp</span>
+                    </button>
+                    <button class="incident-btn" data-type="call" aria-label="Suspicious phone call">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>Suspicious Phone Call</span>
+                    </button>
+                    <button class="incident-btn" data-type="upi" aria-label="UPI or payment request">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>UPI / Payment Request</span>
+                    </button>
+                    <button class="incident-btn" data-type="app" aria-label="Unexpected app installation">
+                        <i class="fas fa-download"></i>
+                        <span>Unexpected App Install</span>
+                    </button>
+                    <button class="incident-btn" data-type="job" aria-label="Job offer">
+                        <i class="fas fa-briefcase"></i>
+                        <span>Job Offer</span>
+                    </button>
+                    <button class="incident-btn" data-type="investment" aria-label="Investment message">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Investment Message</span>
+                    </button>
+                    <button class="incident-btn" data-type="impersonation" aria-label="AI or identity impersonation">
+                        <i class="fas fa-user-secret"></i>
+                        <span>AI / Identity Impersonation</span>
+                    </button>
+                    <button class="incident-btn" data-type="email" aria-label="Phishing email">
+                        <i class="fas fa-envelope-open-text"></i>
+                        <span>Phishing Email</span>
+                    </button>
+                    <button class="incident-btn" data-type="social" aria-label="Social media scam">
+                        <i class="fas fa-hashtag"></i>
+                        <span>Social Media Scam</span>
+                    </button>
+                    <button class="incident-btn" data-type="other" aria-label="Other">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Other</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Submit Evidence -->
+            <div class="step-container hidden" id="step2">
+                <div class="step-badge">Step 2</div>
+                <h3>Submit the suspicious content</h3>
+                <p class="step-note"><i class="fas fa-lock"></i> All processing happens locally in your browser. No data is sent to any server.</p>
+
+                <div class="input-tabs">
+                    <button class="input-tab active" data-tab="text-input"><i class="fas fa-keyboard"></i> Paste Text</button>
+                    <button class="input-tab" data-tab="screenshot-input"><i class="fas fa-image"></i> Upload Screenshot</button>
+                    <button class="input-tab" data-tab="url-input"><i class="fas fa-link"></i> Check URL</button>
+                </div>
+
+                <div id="text-input" class="input-panel active">
+                    <textarea id="suspiciousText" placeholder="Paste the suspicious message here... (e.g., 'Congratulations! You've won ₹50,00,000. Click here to claim: bit.ly/freeprize. Send OTP to verify.')" rows="6" aria-label="Paste suspicious message text"></textarea>
+                    <div class="char-count"><span id="charCount">0</span> characters</div>
+                </div>
+
+                <div id="screenshot-input" class="input-panel">
+                    <div class="upload-zone" id="uploadZone">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Drag & drop a screenshot here or click to browse</p>
+                        <small>Processed locally only. Sensitive info should be masked before upload.</small>
+                        <input type="file" id="screenshotInput" accept="image/*" hidden aria-label="Upload screenshot file">
+                    </div>
+                    <div id="imagePreview" class="image-preview hidden">
+                        <img id="previewImg" alt="Uploaded screenshot preview">
+                        <button id="removeImage" class="btn-danger-sm" aria-label="Remove uploaded image"><i class="fas fa-trash"></i> Remove</button>
+                        <p class="ocr-note"><i class="fas fa-info-circle"></i> OCR is a future feature. For now, please also paste the text content from the image.</p>
+                    </div>
+                </div>
+
+                <div id="url-input" class="input-panel">
+                    <div class="url-input-group">
+                        <i class="fas fa-link"></i>
+                        <input type="text" id="suspiciousUrl" placeholder="Paste suspicious URL here (e.g., http://g00gle-security.xyz/verify)" aria-label="Paste suspicious URL">
+                    </div>
+                    <p class="safety-note"><i class="fas fa-shield-alt"></i> URLs are analyzed heuristically. They are NEVER opened or visited.</p>
+                </div>
+
+                <div class="step-actions">
+                    <button class="btn-secondary" onclick="goToStep(1)"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button class="btn-primary" id="analyzeBtn"><i class="fas fa-search"></i> Analyze Now</button>
+                </div>
+
+                <!-- Sample Messages -->
+                <div class="sample-messages">
+                    <h4><i class="fas fa-flask"></i> Try a demo message:</h4>
+                    <div class="sample-grid">
+                        <button class="sample-btn" data-sample="prize">🎁 Prize Scam</button>
+                        <button class="sample-btn" data-sample="bank">🏦 Bank Alert Scam</button>
+                        <button class="sample-btn" data-sample="job">💼 Job Scam</button>
+                        <button class="sample-btn" data-sample="kyc">📋 KYC Scam</button>
+                        <button class="sample-btn" data-sample="investment">📈 Investment Scam</button>
+                        <button class="sample-btn" data-sample="legitimate">✅ Legitimate Message</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Steps 3-6: Results -->
+            <div class="step-container hidden" id="resultsContainer">
+                <!-- Step 3 & 4: Risk Score -->
+                <div id="riskResult" class="risk-result">
+                    <!-- Dynamically populated -->
+                </div>
+
+                <!-- Step 5: Red Flags -->
+                <div id="redFlags" class="red-flags-container">
+                    <!-- Dynamically populated -->
+                </div>
+
+                <!-- Step 6: Immediate Actions -->
+                <div id="immediateActions" class="actions-container">
+                    <!-- Dynamically populated -->
+                </div>
+
+                <!-- Step 7: Report -->
+                <div id="reportActions" class="report-container">
+                    <!-- Dynamically populated -->
+                </div>
+
+                <div class="step-actions">
+                    <button class="btn-secondary" onclick="resetAnalyzer()"><i class="fas fa-redo"></i> Analyze Another</button>
+                    <button class="btn-primary" id="whatToDoBtn"><i class="fas fa-hand-point-right"></i> What Should I Do Now?</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ SECTION 2: COMPARE ============ -->
+        <section id="compare" class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-columns"></i> Compare Messages</h2>
+                <p>Place two messages side by side and discover which one contains scam indicators.</p>
+            </div>
+
+            <div class="compare-container">
+                <div class="compare-panel">
+                    <h3>Message A</h3>
+                    <textarea id="compareA" placeholder="Paste first message here..." rows="5" aria-label="Message A for comparison"></textarea>
+                    <div id="compareResultA" class="compare-result"></div>
+                </div>
+                <div class="compare-divider">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>VS</span>
+                </div>
+                <div class="compare-panel">
+                    <h3>Message B</h3>
+                    <textarea id="compareB" placeholder="Paste second message here..." rows="5" aria-label="Message B for comparison"></textarea>
+                    <div id="compareResultB" class="compare-result"></div>
+                </div>
+            </div>
+
+            <div class="compare-actions">
+                <button class="btn-primary" id="compareBtn"><i class="fas fa-balance-scale"></i> Compare Now</button>
+                <button class="btn-secondary" id="loadCompareDemo"><i class="fas fa-flask"></i> Load Demo Pair</button>
+            </div>
+
+            <div id="compareVerdict" class="compare-verdict hidden"></div>
+        </section>
+
+        <!-- ============ SECTION 3: DASHBOARD ============ -->
+        <section id="dashboard" class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-chart-bar"></i> Awareness Dashboard</h2>
+                <p>Anonymous demonstration statistics from this session.</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i class="fas fa-search"></i></div>
+                    <div class="stat-value" id="totalScans">0</div>
+                    <div class="stat-label">Total Scans</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon red"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div class="stat-value" id="highRiskCount">0</div>
+                    <div class="stat-label">High Risk Detected</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon orange"><i class="fas fa-exclamation-circle"></i></div>
+                    <div class="stat-value" id="mediumRiskCount">0</div>
+                    <div class="stat-label">Medium Risk</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-value" id="lowRiskCount">0</div>
+                    <div class="stat-label">Low Risk</div>
+                </div>
+            </div>
+
+            <div class="dashboard-charts">
+                <div class="chart-card">
+                    <h3><i class="fas fa-tags"></i> Scam Categories Detected</h3>
+                    <div id="categoryChart" class="chart-container">
+                        <p class="chart-empty">Analyze messages to see category distribution</p>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <h3><i class="fas fa-flag"></i> Most Common Red Flags</h3>
+                    <div id="flagsChart" class="chart-container">
+                        <p class="chart-empty">Analyze messages to see common red flags</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-card full-width">
+                <h3><i class="fas fa-history"></i> Recent Scan History</h3>
+                <div id="scanHistory" class="scan-history">
+                    <p class="chart-empty">No scans yet. Analyze a message to get started.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ SECTION 4: REPORT ============ -->
+        <section id="report" class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-flag"></i> Report & Get Help</h2>
+                <p>Verified official reporting channels and emergency guidance. These are independent of any AI/risk analysis.</p>
+            </div>
+
+            <div class="emergency-banner">
+                <div class="emergency-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                <div>
+                    <h3>💰 Lost Money to Fraud?</h3>
+                    <p>Act within the first hour if possible. Call your bank immediately to freeze the transaction, then report to the cyber-fraud helpline.</p>
+                </div>
+            </div>
+
+            <div class="report-grid">
+                <div class="report-card">
+                    <div class="report-icon"><span class="report-number">1930</span></div>
+                    <h3>National Cyber-Fraud Helpline</h3>
+                    <p>India's dedicated helpline for reporting cyber fraud. Available 24/7.</p>
+                    <div class="report-tag official">Official Government</div>
+                </div>
+                <div class="report-card">
+                    <div class="report-icon"><i class="fas fa-globe"></i></div>
+                    <h3>cybercrime.gov.in</h3>
+                    <p>National Cyber Crime Reporting Portal for filing online complaints.</p>
+                    <div class="report-tag official">Official Government</div>
+                </div>
+                <div class="report-card">
+                    <div class="report-icon"><i class="fas fa-university"></i></div>
+                    <h3>Your Bank's Fraud Line</h3>
+                    <p>Call the number on the BACK of your debit/credit card or your bank's official website. Do NOT use numbers from suspicious messages.</p>
+                    <div class="report-tag warning">Verify Independently</div>
+                </div>
+                <div class="report-card">
+                    <div class="report-icon"><span class="report-number">112</span></div>
+                    <h3>Emergency Services</h3>
+                    <p>For immediate threats, blackmail, or physical safety concerns.</p>
+                    <div class="report-tag official">Emergency</div>
+                </div>
+                <div class="report-card">
+                    <div class="report-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <h3>Local Police Station</h3>
+                    <p>File an FIR at your nearest police station for significant fraud cases.</p>
+                    <div class="report-tag official">Official</div>
+                </div>
+                <div class="report-card">
+                    <div class="report-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>RBI Sachet Portal</h3>
+                    <p>sachet.rbi.org.in — Report unauthorized financial transactions and banking fraud.</p>
+                    <div class="report-tag official">RBI Official</div>
+                </div>
+            </div>
+
+            <!-- Decision Tree -->
+            <div class="decision-tree-section">
+                <h3><i class="fas fa-sitemap"></i> What Happened? — Incident Response Guide</h3>
+                <div id="decisionTree" class="decision-tree">
+                    <div class="dt-question" id="dtStart">
+                        <p>What best describes your situation?</p>
+                        <div class="dt-options">
+                            <button class="dt-btn" data-next="money-lost"><i class="fas fa-money-bill-wave"></i> I sent money / made a payment</button>
+                            <button class="dt-btn" data-next="creds-shared"><i class="fas fa-key"></i> I shared passwords / OTP / PIN</button>
+                            <button class="dt-btn" data-next="app-installed"><i class="fas fa-mobile-alt"></i> I installed an unknown app</button>
+                            <button class="dt-btn" data-next="info-shared"><i class="fas fa-id-card"></i> I shared personal information</button>
+                            <button class="dt-btn" data-next="nothing-yet"><i class="fas fa-hand-paper"></i> I haven't done anything yet</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ SECTION 5: LEARN ============ -->
+        <section id="learn" class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-graduation-cap"></i> Learn About Scams</h2>
+                <p>Understand the manipulation techniques behind common scams.</p>
+            </div>
+
+            <div class="learn-grid">
+                <div class="learn-card">
+                    <div class="learn-icon urgency"><i class="fas fa-clock"></i></div>
+                    <h3>Urgency & Pressure</h3>
+                    <p><strong>How it works:</strong> Scammers create artificial time pressure — "Act in 10 minutes or your account will be blocked!" — to prevent you from thinking clearly or verifying.</p>
+                    <p><strong>Defense:</strong> Legitimate organizations give you reasonable time. Pause, breathe, and verify independently.</p>
+                </div>
+                <div class="learn-card">
+                    <div class="learn-icon authority"><i class="fas fa-user-tie"></i></div>
+                    <h3>Authority Impersonation</h3>
+                    <p><strong>How it works:</strong> Fraudsters pretend to be from your bank, the tax department, police, or a tech company. They use official-sounding language and fake caller IDs.</p>
+                    <p><strong>Defense:</strong> Hang up and call the official number from the organization's real website or your card/statement.</p>
+                </div>
+                <div class="learn-card">
+                    <div class="learn-icon greed"><i class="fas fa-gift"></i></div>
+                    <h3>Too-Good-To-Be-True Offers</h3>
+                    <p><strong>How it works:</strong> Prize winnings, guaranteed high returns, free gifts, or dream jobs with no qualifications needed. The bait triggers excitement.</p>
+                    <p><strong>Defense:</strong> If you didn't enter a contest, you can't win it. Guaranteed returns don't exist. Research the company independently.</p>
+                </div>
+                <div class="learn-card">
+                    <div class="learn-icon fear"><i class="fas fa-exclamation-triangle"></i></div>
+                    <h3>Fear & Threats</h3>
+                    <p><strong>How it works:</strong> "Your account is compromised," "A case is filed against you," "Your Aadhaar is being misused." Fear shuts down rational thinking.</p>
+                    <p><strong>Defense:</strong> Government agencies don't threaten arrest over phone. Banks don't ask for PINs. Verify through official channels.</p>
+                </div>
+                <div class="learn-card">
+                    <div class="learn-icon phishing"><i class="fas fa-fish"></i></div>
+                    <h3>Phishing & Fake Links</h3>
+                    <p><strong>How it works:</strong> Links that look like real websites but have misspellings (g00gle, amaz0n) or extra words. They steal your login credentials.</p>
+                    <p><strong>Defense:</strong> Never click links from messages. Type the official website address directly in your browser.</p>
+                </div>
+                <div class="learn-card">
+                    <div class="learn-icon social"><i class="fas fa-heart"></i></div>
+                    <h3>Emotional Manipulation</h3>
+                    <p><strong>How it works:</strong> Romance scams, charity fraud, or impersonating a family member in trouble. They exploit your emotions and willingness to help.</p>
+                    <p><strong>Defense:</strong> Verify the person's identity through a separate channel. Don't send money based on emotional appeals alone.</p>
+                </div>
+            </div>
+
+            <div class="learn-quiz">
+                <h3><i class="fas fa-question-circle"></i> Quick Quiz: Can You Spot the Scam?</h3>
+                <div id="quizContainer">
+                    <div class="quiz-question" id="quizQuestion">
+                        <!-- Dynamically populated -->
+                    </div>
+                    <div class="quiz-options" id="quizOptions">
+                        <!-- Dynamically populated -->
+                    </div>
+                    <div id="quizFeedback" class="quiz-feedback hidden"></div>
+                    <button class="btn-primary" id="nextQuizBtn" style="display:none;"><i class="fas fa-arrow-right"></i> Next Question</button>
+                </div>
+                <button class="btn-primary" id="startQuizBtn"><i class="fas fa-play"></i> Start Quiz</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- What Should I Do Modal -->
+    <div id="actionModal" class="modal hidden">
+        <div class="modal-overlay" onclick="closeModal()"></div>
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()" aria-label="Close modal"><i class="fas fa-times"></i></button>
+            <div id="modalBody">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Read Aloud Indicator -->
+    <div id="readAloudIndicator" class="read-aloud-indicator hidden">
+        <i class="fas fa-volume-up"></i> Read Aloud Mode Active
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-main">
+                <div class="footer-brand">
+                    <i class="fas fa-shield-alt"></i> CYBER SHIELD
+                </div>
+                <p>An educational awareness prototype. Not a replacement for professional cybersecurity systems, law enforcement, or banking security.</p>
+            </div>
+            <div class="footer-links">
+                <p><strong>Emergency:</strong> Cyber Fraud Helpline: <strong>1930</strong> | Emergency: <strong>112</strong></p>
+                <p><strong>Report Online:</strong> cybercrime.gov.in</p>
+            </div>
+            <div class="footer-disclaimer">
+                <p>⚠️ A "low risk" score does NOT guarantee a message is genuine. Always verify independently through trusted official channels.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/scamDetector.js"></script>
+    <script src="js/urlAnalyzer.js"></script>
+    <script src="js/decisionTree.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

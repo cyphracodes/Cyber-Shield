@@ -1,959 +1,560 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CYBER SHIELD — PAUSE • CHECK • PROTECT</title>
-    <style>
-        /* ============ DESIGN SYSTEM & VARIABLES ============ */
-        :root {
-            --primary: #00d4ff;
-            --primary-dark: #0088cc;
-            --secondary: #7c3aed;
-            --accent: #00ff88;
-            --danger: #ef4444;
-            --danger-bg: #450a0a;
-            --warning: #f59e0b;
-            --warning-bg: #451a03;
-            --success: #10b981;
-            --success-bg: #064e3b;
-            --bg-dark: #0b0f19;
-            --bg-card: #151d30;
-            --bg-input: #1e293b;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border: #334155;
-            --radius: 12px;
-            --radius-sm: 8px;
-            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        body.light-theme {
-            --bg-dark: #f1f5f9;
-            --bg-card: #ffffff;
-            --bg-input: #e2e8f0;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border: #cbd5e1;
-            --danger-bg: #fee2e2;
-            --warning-bg: #fef3c7;
-            --success-bg: #dcfce7;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            line-height: 1.5;
-            min-height: 100vh;
-        }
-
-        /* ============ TOP DISCLAIMER BANNER ============ */
-        .disclaimer-banner {
-            background: linear-gradient(90deg, #1e1b4b, #311042);
-            color: #e0e7ff;
-            padding: 8px 16px;
-            font-size: 0.82rem;
-            text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        /* ============ NAVIGATION BAR ============ */
-        .navbar {
-            background: rgba(15, 23, 42, 0.95);
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-        }
-
-        .nav-container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .shield-badge {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            box-shadow: 0 0 12px rgba(0, 212, 255, 0.4);
-        }
-
-        .nav-title {
-            font-weight: 800;
-            font-size: 1.1rem;
-            letter-spacing: 1px;
-            color: var(--primary);
-        }
-
-        .nav-menu {
-            display: flex;
-            gap: 6px;
-        }
-
-        .nav-btn {
-            padding: 8px 14px;
-            border-radius: var(--radius-sm);
-            background: transparent;
-            border: 1px solid transparent;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .nav-btn:hover, .nav-btn.active {
-            color: var(--primary);
-            background: rgba(0, 212, 255, 0.1);
-            border-color: rgba(0, 212, 255, 0.3);
-        }
-
-        .theme-toggle {
-            padding: 6px 12px;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border);
-            background: var(--bg-card);
-            color: var(--text-main);
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
-
-        /* ============ PAGE SECTIONS ============ */
-        .page-section {
-            display: none;
-        }
-
-        .page-section.active {
-            display: block;
-        }
-
-        /* ============ HERO HOMEPAGE ============ */
-        .hero-viewport {
-            position: relative;
-            padding: 60px 20px 40px;
-            text-align: center;
-            overflow: hidden;
-            background: radial-gradient(circle at 50% 30%, #1e1b4b 0%, #0b0f19 70%);
-            min-height: calc(100vh - 120px);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #matrixCanvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.15;
-            pointer-events: none;
-        }
-
-        .hero-icon {
-            font-size: 4rem;
-            margin-bottom: 16px;
-            display: inline-block;
-            animation: floatIcon 3s ease-in-out infinite;
-            filter: drop-shadow(0 0 20px var(--primary));
-        }
-
-        @keyframes floatIcon {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .hero-heading {
-            font-size: clamp(2rem, 5vw, 3.8rem);
-            font-weight: 900;
-            letter-spacing: 2px;
-            background: linear-gradient(135deg, #00d4ff, #a855f7, #00ff88);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 16px;
-        }
-
-        /* PAUSE CHECK PROTECT TAGLINE */
-        .tagline-bar {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin: 10px 0 24px;
-            flex-wrap: wrap;
-        }
-
-        .tag-pill {
-            padding: 6px 18px;
-            border-radius: 20px;
-            font-weight: 800;
-            font-size: clamp(0.9rem, 2.5vw, 1.3rem);
-            letter-spacing: 2px;
-        }
-
-        .tag-pause { color: #00d4ff; background: rgba(0, 212, 255, 0.12); border: 1px solid rgba(0, 212, 255, 0.3); }
-        .tag-check { color: #a855f7; background: rgba(168, 85, 247, 0.12); border: 1px solid rgba(168, 85, 247, 0.3); }
-        .tag-protect { color: #00ff88; background: rgba(0, 255, 136, 0.12); border: 1px solid rgba(0, 255, 136, 0.3); }
-
-        .tag-dot { color: var(--text-muted); opacity: 0.5; }
-
-        .hero-subtext {
-            max-width: 650px;
-            color: var(--text-muted);
-            font-size: 1.05rem;
-            margin: 0 auto 32px;
-        }
-
-        .hero-actions {
-            display: flex;
-            gap: 14px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn-main {
-            padding: 14px 28px;
-            border-radius: var(--radius-sm);
-            border: none;
-            font-weight: 700;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: #ffffff;
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--text-main);
-            border: 2px solid var(--primary);
-        }
-
-        .btn-outline:hover {
-            background: rgba(0, 212, 255, 0.1);
-        }
-
-        .feature-cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            max-width: 900px;
-            width: 100%;
-            margin-top: 48px;
-        }
-
-        .f-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            padding: 20px;
-            border-radius: var(--radius);
-            text-align: center;
-        }
-
-        .f-card-icon { font-size: 1.8rem; margin-bottom: 8px; }
-        .f-card-title { font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; color: var(--primary); }
-        .f-card-desc { font-size: 0.8rem; color: var(--text-muted); }
-
-        /* ============ APP LAYOUT CONTAINER ============ */
-        .container {
-            max-width: 1000px;
-            margin: 24px auto;
-            padding: 0 16px;
-        }
-
-        .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 24px;
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .section-header h2 { font-size: 1.6rem; font-weight: 800; }
-        .section-header p { color: var(--text-muted); font-size: 0.9rem; }
-
-        /* CATEGORY GRID */
-        .cat-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 10px;
-            margin-top: 14px;
-        }
-
-        .cat-btn {
-            background: var(--bg-input);
-            border: 2px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 14px 10px;
-            text-align: center;
-            cursor: pointer;
-            color: var(--text-main);
-            font-weight: 600;
-            font-size: 0.85rem;
-            transition: var(--transition);
-        }
-
-        .cat-btn:hover, .cat-btn.selected {
-            border-color: var(--primary);
-            background: rgba(0, 212, 255, 0.1);
-            color: var(--primary);
-        }
-
-        .cat-btn-icon { font-size: 1.4rem; display: block; margin-bottom: 6px; }
-
-        /* INPUT TABS */
-        .tab-bar {
-            display: flex;
-            gap: 6px;
-            background: var(--bg-input);
-            padding: 4px;
-            border-radius: var(--radius-sm);
-            margin-bottom: 14px;
-        }
-
-        .tab-item {
-            flex: 1;
-            padding: 8px;
-            border: none;
-            border-radius: 6px;
-            background: transparent;
-            color: var(--text-muted);
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-        }
-
-        .tab-item.active {
-            background: var(--bg-card);
-            color: var(--primary);
-        }
-
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-
-        textarea, input[type="text"] {
-            width: 100%;
-            padding: 12px 14px;
-            background: var(--bg-input);
-            border: 2px solid var(--border);
-            border-radius: var(--radius-sm);
-            color: var(--text-main);
-            font-family: inherit;
-            font-size: 0.95rem;
-        }
-
-        textarea:focus, input[type="text"]:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .upload-dropzone {
-            border: 2px dashed var(--border);
-            border-radius: var(--radius-sm);
-            padding: 24px;
-            text-align: center;
-            cursor: pointer;
-            color: var(--text-muted);
-            background: var(--bg-input);
-        }
-
-        .upload-dropzone:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        .image-preview-box img {
-            max-width: 100%;
-            max-height: 220px;
-            border-radius: var(--radius-sm);
-            margin-top: 10px;
-            border: 1px solid var(--border);
-        }
-
-        /* SAMPLE BUTTONS */
-        .sample-bar {
-            margin-top: 16px;
-            padding-top: 14px;
-            border-top: 1px solid var(--border);
-        }
-
-        .sample-btn-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 8px;
-        }
-
-        .btn-sm-sample {
-            padding: 5px 12px;
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            background: var(--bg-input);
-            color: var(--text-main);
-            font-size: 0.78rem;
-            cursor: pointer;
-        }
-
-        .btn-sm-sample:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        /* RISK RESULT BOXES */
-        .result-banner {
-            padding: 24px;
-            border-radius: var(--radius);
-            text-align: center;
-            margin-bottom: 16px;
-            color: #ffffff;
-        }
-
-        .result-banner.high { background: linear-gradient(135deg, #b91c1c, #7f1d1d); }
-        .result-banner.medium { background: linear-gradient(135deg, #d97706, #78350f); }
-        .result-banner.low { background: linear-gradient(135deg, #047857, #064e3b); }
-
-        .score-badge {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.2);
-            border: 3px solid rgba(255,255,255,0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 10px;
-            font-size: 1.8rem;
-            font-weight: 900;
-        }
-
-        .red-flag-card {
-            display: flex;
-            gap: 12px;
-            padding: 12px;
-            border-radius: var(--radius-sm);
-            margin-bottom: 8px;
-            background: var(--bg-input);
-            border-left: 4px solid var(--primary);
-        }
-
-        .red-flag-card.high { border-color: var(--danger); background: var(--danger-bg); }
-        .red-flag-card.medium { border-color: var(--warning); background: var(--warning-bg); }
-        .red-flag-card.low { border-color: var(--success); background: var(--success-bg); }
-
-        /* DASHBOARD GRID */
-        .dash-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
-        }
-
-        .dash-box {
-            background: var(--bg-input);
-            border: 1px solid var(--border);
-            padding: 16px;
-            border-radius: var(--radius-sm);
-            text-align: center;
-        }
-
-        .dash-num {
-            font-size: 1.8rem;
-            font-weight: 900;
-            color: var(--primary);
-        }
-
-        .hidden { display: none !important; }
-
-        footer {
-            text-align: center;
-            padding: 24px;
-            border-top: 1px solid var(--border);
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            margin-top: 40px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CYBER SHIELD — PAUSE • CHECK • PROTECT</title>
+<style>
+:root {
+  --primary: #22d3ee;
+  --secondary: #a78bfa;
+  --accent: #34d399;
+  --danger: #f87171;
+  --warning: #fbbf24;
+  --success: #34d399;
+  --bg: #0b1220;
+  --card: #111827;
+  --input: #1f2937;
+  --text: #f1f5f9;
+  --muted: #94a3b8;
+  --border: #334155;
+  --radius: 14px;
+}
+body.light {
+  --bg: #f1f5f9; --card: #ffffff; --input: #e2e8f0;
+  --text: #0f172a; --muted: #64748b; --border: #cbd5e1;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  background: var(--bg); color: var(--text); min-height: 100vh;
+}
+.banner {
+  background: linear-gradient(90deg,#312e81,#581c87);
+  color: #e0e7ff; text-align: center; padding: 8px 12px; font-size: 0.82rem;
+}
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(15,23,42,0.95); border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+}
+.nav-inner {
+  max-width: 1100px; margin: 0 auto; padding: 12px 16px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.brand { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.logo {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: linear-gradient(135deg,var(--primary),var(--secondary));
+  display: grid; place-items: center; font-size: 1.1rem;
+  box-shadow: 0 0 16px rgba(34,211,238,0.35);
+}
+.brand b { color: var(--primary); letter-spacing: 0.5px; }
+.menu { display: flex; flex-wrap: wrap; gap: 6px; }
+.menu button {
+  border: 1px solid transparent; background: transparent; color: var(--muted);
+  padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem;
+}
+.menu button.active, .menu button:hover {
+  color: var(--primary); background: rgba(34,211,238,0.1); border-color: rgba(34,211,238,0.3);
+}
+.theme-btn {
+  border: 1px solid var(--border); background: var(--card); color: var(--text);
+  border-radius: 8px; padding: 6px 10px; cursor: pointer;
+}
+.page { display: none; }
+.page.active { display: block; }
+.wrap { max-width: 1000px; margin: 0 auto; padding: 20px 16px 40px; }
+
+/* HERO */
+.hero {
+  min-height: calc(100vh - 120px); display: grid; place-items: center; text-align: center;
+  padding: 40px 16px; position: relative; overflow: hidden;
+  background: radial-gradient(circle at 50% 20%, #1e1b4b 0%, #0b1220 65%);
+}
+#matrix { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.14; pointer-events: none; }
+.hero-content { position: relative; z-index: 2; max-width: 820px; }
+.hero-icon { font-size: 3.4rem; filter: drop-shadow(0 0 18px var(--primary)); animation: float 3s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+.hero h1 {
+  font-size: clamp(2rem,5vw,3.4rem); font-weight: 900; letter-spacing: 1px; margin: 10px 0 14px;
+  background: linear-gradient(135deg,#22d3ee,#a78bfa,#34d399);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.tags { display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+.tag {
+  padding: 6px 14px; border-radius: 999px; font-weight: 800; letter-spacing: 1px; font-size: 0.95rem;
+}
+.t1 { color:#22d3ee; border:1px solid rgba(34,211,238,.35); background:rgba(34,211,238,.1); }
+.t2 { color:#a78bfa; border:1px solid rgba(167,139,250,.35); background:rgba(167,139,250,.1); }
+.t3 { color:#34d399; border:1px solid rgba(52,211,153,.35); background:rgba(52,211,153,.1); }
+.dot { color: var(--muted); }
+.hero p { color: var(--muted); max-width: 620px; margin: 0 auto 22px; }
+.hero-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.btn {
+  border: none; border-radius: 10px; padding: 12px 18px; font-weight: 700; cursor: pointer;
+}
+.btn-primary {
+  color: #fff; background: linear-gradient(135deg,var(--primary),var(--secondary));
+  box-shadow: 0 0 18px rgba(34,211,238,.28);
+}
+.btn-outline { background: transparent; color: var(--text); border: 2px solid var(--primary); }
+.features {
+  margin-top: 34px; display: grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap: 12px;
+}
+.feature {
+  background: rgba(17,24,39,.85); border: 1px solid var(--border); border-radius: 12px; padding: 16px;
+}
+.feature b { display:block; color: var(--primary); margin: 6px 0 4px; }
+.feature span { color: var(--muted); font-size: 0.82rem; }
+
+/* CARDS / FORMS */
+.card {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 18px; margin-bottom: 16px;
+}
+.center { text-align: center; margin-bottom: 18px; }
+.center h2 { font-size: 1.6rem; }
+.center p { color: var(--muted); }
+.grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 10px; margin-top: 12px;
+}
+.cat {
+  background: var(--input); border: 2px solid var(--border); border-radius: 12px;
+  padding: 14px 10px; text-align: center; cursor: pointer; user-select: none;
+}
+.cat:hover, .cat.active {
+  border-color: var(--primary); color: var(--primary); background: rgba(34,211,238,0.08);
+}
+.cat .ico { font-size: 1.35rem; display: block; margin-bottom: 6px; }
+.tabs { display: flex; gap: 6px; background: var(--input); padding: 4px; border-radius: 10px; margin: 12px 0; }
+.tab {
+  flex: 1; border: none; background: transparent; color: var(--muted); padding: 9px;
+  border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.84rem;
+}
+.tab.active { background: var(--card); color: var(--primary); }
+.panel { display: none; }
+.panel.active { display: block; }
+textarea, input[type=text] {
+  width: 100%; background: var(--input); color: var(--text); border: 2px solid var(--border);
+  border-radius: 10px; padding: 12px; font: inherit;
+}
+textarea:focus, input[type=text]:focus { outline: none; border-color: var(--primary); }
+.drop {
+  border: 2px dashed var(--border); border-radius: 10px; padding: 22px; text-align: center;
+  color: var(--muted); cursor: pointer; background: var(--input);
+}
+.drop:hover { border-color: var(--primary); color: var(--primary); }
+.preview { text-align: center; margin-top: 10px; }
+.preview img { max-width: 100%; max-height: 220px; border-radius: 10px; border: 1px solid var(--border); }
+.samples { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
+.sample-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.chip {
+  border: 1px solid var(--border); background: var(--input); color: var(--text);
+  border-radius: 999px; padding: 6px 12px; cursor: pointer; font-size: 0.8rem;
+}
+.chip:hover { border-color: var(--primary); color: var(--primary); }
+.full { width: 100%; margin-top: 14px; }
+.hidden { display: none !important; }
+
+/* RESULTS */
+.result {
+  border-radius: 14px; padding: 22px; text-align: center; color: #fff; margin-bottom: 12px;
+}
+.result.high { background: linear-gradient(135deg,#dc2626,#7f1d1d); }
+.result.medium { background: linear-gradient(135deg,#d97706,#78350f); }
+.result.low { background: linear-gradient(135deg,#059669,#064e3b); }
+.score {
+  width: 84px; height: 84px; margin: 0 auto 10px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 1.8rem; font-weight: 900;
+  background: rgba(255,255,255,.18); border: 3px solid rgba(255,255,255,.35);
+}
+.flag {
+  display: flex; gap: 10px; padding: 12px; border-radius: 10px; margin-bottom: 8px;
+  background: var(--input); border-left: 4px solid var(--primary);
+}
+.flag.high { border-left-color: var(--danger); }
+.flag.medium { border-left-color: var(--warning); }
+.flag.low { border-left-color: var(--success); }
+.muted { color: var(--muted); font-size: 0.85rem; }
+.actions-box { background: var(--input); border-radius: 10px; padding: 12px; }
+.actions-box p { margin: 6px 0; font-size: 0.9rem; }
+
+/* COMPARE / DASH / REPORT */
+.split { display: grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: 12px; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit,minmax(140px,1fr)); gap: 10px; }
+.stat { background: var(--input); border: 1px solid var(--border); border-radius: 12px; padding: 16px; text-align: center; }
+.stat b { display:block; font-size: 1.8rem; color: var(--primary); }
+.alert {
+  border-left: 5px solid var(--danger); background: rgba(248,113,113,.08);
+  border-radius: 12px; padding: 16px;
+}
+footer { text-align: center; color: var(--muted); padding: 24px 12px; border-top: 1px solid var(--border); font-size: 0.85rem; }
+</style>
 </head>
 <body>
+<div class="banner">🛡️ AWARENESS AID: Educational prototype only. Never enter real banking credentials or OTPs.</div>
 
-    <!-- DISCLAIMER -->
-    <div class="disclaimer-banner">
-        🛡️ <strong>AWARENESS AID:</strong> Educational prototype only. Never enter real banking credentials or OTPs.
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="brand" onclick="go('home')">
+      <div class="logo">🛡️</div>
+      <b>CYBER SHIELD</b>
+    </div>
+    <div class="menu">
+      <button id="nav-home" class="active" onclick="go('home')">Home</button>
+      <button id="nav-analyzer" onclick="go('analyzer')">Analyze</button>
+      <button id="nav-compare" onclick="go('compare')">Compare</button>
+      <button id="nav-dashboard" onclick="go('dashboard')">Dashboard</button>
+      <button id="nav-report" onclick="go('report')">Report (1930)</button>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()">☀️ / 🌙</button>
+  </div>
+</nav>
+
+<!-- HOME -->
+<section id="home" class="page active">
+  <div class="hero">
+    <canvas id="matrix"></canvas>
+    <div class="hero-content">
+      <div class="hero-icon">🛡️</div>
+      <h1>CYBER SHIELD</h1>
+      <div class="tags">
+        <span class="tag t1">PAUSE</span><span class="dot">•</span>
+        <span class="tag t2">CHECK</span><span class="dot">•</span>
+        <span class="tag t3">PROTECT</span>
+      </div>
+      <p>Your first-line scam awareness assistant. Evaluate suspicious SMS, UPI requests, job offers, and risky links before you act.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" onclick="go('analyzer')">🔍 Start Analyzing</button>
+        <button class="btn btn-outline" onclick="go('report')">📞 Helpline 1930</button>
+      </div>
+      <div class="features">
+        <div class="feature"><div>🧠</div><b>SMART DETECTION</b><span>Rule-based scam pattern engine</span></div>
+        <div class="feature"><div>🔒</div><b>100% PRIVATE</b><span>Everything runs in your browser</span></div>
+        <div class="feature"><div>⚡</div><b>INSTANT SCORE</b><span>Immediate 0–100 risk rating</span></div>
+        <div class="feature"><div>🚨</div><b>DIRECT HELP</b><span>Official reporting guidance</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <!-- ANALYZER -->
+  <section id="analyzer" class="page">
+    <div class="center">
+      <h2>Analyze Suspicious Content</h2>
+      <p>Select a scenario, then submit a message, screenshot, or link.</p>
     </div>
 
-    <!-- NAVBAR -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-brand" onclick="navigateTo('home')">
-                <div class="shield-badge">🛡️</div>
-                <span class="nav-title">CYBER SHIELD</span>
-            </div>
-            <div class="nav-menu">
-                <button class="nav-btn active" id="nav-home" onclick="navigateTo('home')">Home</button>
-                <button class="nav-btn" id="nav-analyzer" onclick="navigateTo('analyzer')">Analyze</button>
-                <button class="nav-btn" id="nav-compare" onclick="navigateTo('compare')">Compare</button>
-                <button class="nav-btn" id="nav-dashboard" onclick="navigateTo('dashboard')">Dashboard</button>
-                <button class="nav-btn" id="nav-report" onclick="navigateTo('report')">Report (1930)</button>
-            </div>
-            <button class="theme-toggle" onclick="toggleTheme()">☀️ / 🌙</button>
-        </div>
-    </nav>
-
-    <!-- ============ SECTION 1: HOMEPAGE HERO ============ -->
-    <div id="section-home" class="page-section active">
-        <div class="hero-viewport">
-            <canvas id="matrixCanvas"></canvas>
-
-            <div class="hero-icon">🛡️</div>
-            <h1 class="hero-heading">CYBER SHIELD</h1>
-
-            <div class="tagline-bar">
-                <span class="tag-pill tag-pause">PAUSE</span>
-                <span class="tag-dot">•</span>
-                <span class="tag-pill tag-check">CHECK</span>
-                <span class="tag-dot">•</span>
-                <span class="tag-pill tag-protect">PROTECT</span>
-            </div>
-
-            <p class="hero-subtext">
-                Your immediate first-line safety assistant. Evaluate suspicious SMS messages, UPI payment demands, fake job offers, and risky links before taking action.
-            </p>
-
-            <div class="hero-actions">
-                <button class="btn-main btn-primary" onclick="navigateTo('analyzer')">🔍 Start Analyzing</button>
-                <button class="btn-main btn-outline" onclick="navigateTo('report')">📞 Helpline: 1930</button>
-            </div>
-
-            <div class="feature-cards-grid">
-                <div class="f-card">
-                    <div class="f-card-icon">🧠</div>
-                    <div class="f-card-title">SMART DETECTION</div>
-                    <div class="f-card-desc">Rule-based pattern matching engine</div>
-                </div>
-                <div class="f-card">
-                    <div class="f-card-icon">🔒</div>
-                    <div class="f-card-title">100% PRIVATE</div>
-                    <div class="f-card-desc">Processes text locally inside your browser</div>
-                </div>
-                <div class="f-card">
-                    <div class="f-card-icon">⚡</div>
-                    <div class="f-card-title">INSTANT SCORE</div>
-                    <div class="f-card-desc">Immediate risk calculation (0–100)</div>
-                </div>
-                <div class="f-card">
-                    <div class="f-card-icon">🚨</div>
-                    <div class="f-card-title">DIRECT HELP</div>
-                    <div class="f-card-desc">Official helpline resources (1930)</div>
-                </div>
-            </div>
-        </div>
+    <div class="card">
+      <h3>Step 1: Choose Scenario</h3>
+      <div class="grid" id="scenarioGrid">
+        <div class="cat active" data-cat="sms" onclick="pickCat(this)"><span class="ico">💬</span>SMS / WhatsApp</div>
+        <div class="cat" data-cat="call" onclick="pickCat(this)"><span class="ico">📞</span>Phone Call</div>
+        <div class="cat" data-cat="upi" onclick="pickCat(this)"><span class="ico">📱</span>UPI Request</div>
+        <div class="cat" data-cat="job" onclick="pickCat(this)"><span class="ico">💼</span>Job Offer</div>
+        <div class="cat" data-cat="investment" onclick="pickCat(this)"><span class="ico">📈</span>Investment</div>
+        <div class="cat" data-cat="app" onclick="pickCat(this)"><span class="ico">📲</span>App Download</div>
+      </div>
     </div>
 
-    <!-- ============ CONTAINER FOR OTHER PAGES ============ -->
-    <div class="container">
+    <div class="card">
+      <h3>Step 2: Submit Content</h3>
+      <div class="tabs">
+        <button class="tab active" onclick="showTab('text', this)">Text Message</button>
+        <button class="tab" onclick="showTab('image', this)">Upload Screenshot</button>
+        <button class="tab" onclick="showTab('url', this)">Web Link (URL)</button>
+      </div>
 
-        <!-- ============ SECTION 2: ANALYZER ============ -->
-        <div id="section-analyzer" class="page-section">
-            <div class="section-header">
-                <h2>Analyze Suspicious Content</h2>
-                <p>Select a scenario and submit the message or link below.</p>
-            </div>
+      <div id="tab-text" class="panel active">
+        <textarea id="textInput" rows="5" placeholder="Paste suspicious message here..."></textarea>
+      </div>
 
-            <div class="card" id="step1-card">
-                <h3>Step 1: Choose Scenario</h3>
-                <div class="cat-grid">
-                    <div class="cat-btn selected" onclick="selectScenario('sms', this)"><span class="cat-btn-icon">💬</span>SMS / WhatsApp</div>
-                    <div class="cat-btn" onclick="selectScenario('call', this)"><span class="cat-btn-icon">📞</span>Phone Call</div>
-                    <div class="cat-btn" onclick="selectScenario('upi', this)"><span class="cat-btn-icon">📱</span>UPI Request</div>
-                    <div class="cat-btn" onclick="selectScenario('job', this)"><span class="cat-btn-icon">💼</span>Job Offer</div>
-                    <div class="cat-btn" onclick="selectScenario('investment', this)"><span class="cat-btn-icon">📈</span>Investment</div>
-                    <div class="cat-btn" onclick="selectScenario('app', this)"><span class="cat-btn-icon">📲</span>App Download</div>
-                </div>
-            </div>
-
-            <div class="card" id="step2-card">
-                <h3>Step 2: Submit Content</h3>
-
-                <div class="tab-bar">
-                    <button class="tab-item active" onclick="switchTab('tab-text', this)">Text Message</button>
-                    <button class="tab-item" onclick="switchTab('tab-image', this)">Upload Screenshot</button>
-                    <button class="tab-item" onclick="switchTab('tab-url', this)">Web Link (URL)</button>
-                </div>
-
-                <div id="tab-text" class="tab-content active">
-                    <textarea id="inputText" rows="5" placeholder="Paste suspicious message here..."></textarea>
-                </div>
-
-                <div id="tab-image" class="tab-content">
-                    <div class="upload-dropzone" onclick="document.getElementById('fileUpload').click()">
-                        📁 Click to choose screenshot or drag image here
-                        <input type="file" id="fileUpload" accept="image/*" style="display:none;" onchange="handleImageSelect(event)">
-                    </div>
-                    <div id="imagePreviewBox" class="image-preview-box hidden" style="text-align:center;">
-                        <img id="previewImage" src="" alt="Preview">
-                        <br>
-                        <button class="btn-sm-sample" style="margin-top:6px; color:var(--danger);" onclick="clearImage()">Remove Image</button>
-                    </div>
-                </div>
-
-                <div id="tab-url" class="tab-content">
-                    <input type="text" id="inputUrl" placeholder="Paste suspicious link (e.g. http://sbi-kyc-update.xyz)">
-                </div>
-
-                <div class="sample-bar">
-                    <small style="color:var(--text-muted)">Try a demo sample message:</small>
-                    <div class="sample-btn-group">
-                        <button class="btn-sm-sample" onclick="useSample('prize')">🎁 Prize Scam</button>
-                        <button class="btn-sm-sample" onclick="useSample('bank')">🏦 Bank KYC Scam</button>
-                        <button class="btn-sm-sample" onclick="useSample('job')">💼 Job Scam</button>
-                        <button class="btn-sm-sample" onclick="useSample('investment')">📈 Investment Scam</button>
-                        <button class="btn-sm-sample" onclick="useSample('legit')">✅ Legitimate SMS</button>
-                    </div>
-                </div>
-
-                <div style="margin-top:20px;">
-                    <button class="btn-main btn-primary" style="width:100%;" onclick="runScamCheck()">🔍 Analyze Now</button>
-                </div>
-            </div>
-
-            <!-- RESULTS BOX -->
-            <div class="card hidden" id="results-card">
-                <div id="resultBanner"></div>
-                <div id="flagsBox"></div>
-                <div id="actionsBox"></div>
-                <div style="margin-top:16px;">
-                    <button class="btn-main btn-outline" style="width:100%;" onclick="resetCheck()">🔄 Analyze Another Message</button>
-                </div>
-            </div>
+      <div id="tab-image" class="panel">
+        <div class="drop" onclick="document.getElementById('fileInput').click()">
+          📁 Click to upload screenshot
+          <input id="fileInput" type="file" accept="image/*" hidden onchange="onImage(event)">
         </div>
-
-        <!-- ============ SECTION 3: COMPARE ============ -->
-        <div id="section-compare" class="page-section">
-            <div class="section-header">
-                <h2>Compare Messages</h2>
-                <p>Compare a suspicious message side-by-side with a genuine one.</p>
-            </div>
-            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:16px;">
-                <div class="card">
-                    <h3>Message A</h3>
-                    <textarea id="compA" rows="4" placeholder="Paste Message A..."></textarea>
-                    <div id="resA" style="margin-top:10px; font-weight:700;"></div>
-                </div>
-                <div class="card">
-                    <h3>Message B</h3>
-                    <textarea id="compB" rows="4" placeholder="Paste Message B..."></textarea>
-                    <div id="resB" style="margin-top:10px; font-weight:700;"></div>
-                </div>
-            </div>
-            <div style="display:flex; gap:10px; margin-top:10px; justify-content:center;">
-                <button class="btn-main btn-primary" onclick="runCompare()">Compare Messages</button>
-                <button class="btn-main btn-outline" onclick="loadCompareDemo()">Load Demo Pair</button>
-            </div>
+        <div id="imgBox" class="preview hidden">
+          <img id="imgPreview" alt="preview">
+          <div style="margin-top:8px;"><button class="chip" onclick="clearImage()">Remove Image</button></div>
         </div>
+      </div>
 
-        <!-- ============ SECTION 4: DASHBOARD ============ -->
-        <div id="section-dashboard" class="page-section">
-            <div class="section-header">
-                <h2>Session Analytics</h2>
-                <p>Anonymous stats tracked during this local browser session.</p>
-            </div>
-            <div class="dash-grid">
-                <div class="dash-box"><div class="dash-num" id="dTotal">0</div><div>Total Scans</div></div>
-                <div class="dash-box"><div class="dash-num" id="dHigh" style="color:var(--danger)">0</div><div>High Risk</div></div>
-                <div class="dash-box"><div class="dash-num" id="dMedium" style="color:var(--warning)">0</div><div>Medium Risk</div></div>
-                <div class="dash-box"><div class="dash-num" id="dLow" style="color:var(--success)">0</div><div>Low Risk</div></div>
-            </div>
+      <div id="tab-url" class="panel">
+        <input id="urlInput" type="text" placeholder="Paste link e.g. http://sbi-kyc-update.xyz/verify">
+      </div>
+
+      <div class="samples">
+        <div class="muted">Try a demo sample:</div>
+        <div class="sample-row">
+          <button class="chip" onclick="loadSample('prize')">🎁 Prize Scam</button>
+          <button class="chip" onclick="loadSample('bank')">🏦 Bank KYC Scam</button>
+          <button class="chip" onclick="loadSample('job')">💼 Job Scam</button>
+          <button class="chip" onclick="loadSample('investment')">📈 Investment Scam</button>
+          <button class="chip" onclick="loadSample('legit')">✅ Legitimate SMS</button>
         </div>
+      </div>
 
-        <!-- ============ SECTION 5: REPORT ============ -->
-        <div id="section-report" class="page-section">
-            <div class="section-header">
-                <h2>Official Helplines</h2>
-                <p>Verified channels to report financial cyber fraud in India.</p>
-            </div>
-            <div class="card" style="border-left: 5px solid var(--danger);">
-                <h3 style="color:var(--danger)">💰 Victim of Cyber Financial Fraud?</h3>
-                <p style="margin-top:8px;">Act immediately! Speed is critical to freeze fraudulent account transfers.</p>
-                <ul style="margin:12px 0 0 20px; line-height: 1.8;">
-                    <li>Call <strong>1930</strong> — National Cyber Fraud Helpline (Available 24/7)</li>
-                    <li>File an online complaint at <strong>cybercrime.gov.in</strong></li>
-                    <li>Contact your bank's official customer support to block your debit/credit card.</li>
-                </ul>
-            </div>
-        </div>
-
+      <button class="btn btn-primary full" onclick="analyze()">🔍 Analyze Now</button>
     </div>
 
-    <footer>
-        CYBER SHIELD — PAUSE • CHECK • PROTECT | Emergency Helpline: <strong>1930</strong>
-    </footer>
+    <div id="resultCard" class="card hidden">
+      <div id="resultBanner"></div>
+      <div id="flagsOut"></div>
+      <div id="actionsOut"></div>
+      <button class="btn btn-outline full" onclick="resetAnalyze()">🔄 Analyze Another</button>
+    </div>
+  </section>
 
-    <!-- ============ JAVASCRIPT CONTROLLER ============ -->
-    <script>
-        // 1. ROUTING CONTROLLER
-        function navigateTo(sectionId) {
-            // Hide all pages
-            document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
-            // Reset nav buttons
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+  <!-- COMPARE -->
+  <section id="compare" class="page">
+    <div class="center"><h2>Compare Messages</h2><p>Compare two messages side by side.</p></div>
+    <div class="split">
+      <div class="card">
+        <h3>Message A</h3>
+        <textarea id="compA" rows="5" placeholder="Paste message A"></textarea>
+        <div id="scoreA" style="margin-top:8px;font-weight:700;"></div>
+      </div>
+      <div class="card">
+        <h3>Message B</h3>
+        <textarea id="compB" rows="5" placeholder="Paste message B"></textarea>
+        <div id="scoreB" style="margin-top:8px;font-weight:700;"></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:8px;flex-wrap:wrap;">
+      <button class="btn btn-primary" onclick="compareMsgs()">Compare Now</button>
+      <button class="btn btn-outline" onclick="loadCompareDemo()">Load Demo Pair</button>
+    </div>
+  </section>
 
-            // Show selected page
-            const targetPage = document.getElementById('section-' + sectionId);
-            if (targetPage) targetPage.classList.add('active');
+  <!-- DASHBOARD -->
+  <section id="dashboard" class="page">
+    <div class="center"><h2>Session Dashboard</h2><p>Local anonymous stats for this browser session.</p></div>
+    <div class="stats">
+      <div class="stat"><b id="sTotal">0</b>Total Scans</div>
+      <div class="stat"><b id="sHigh" style="color:var(--danger)">0</b>High Risk</div>
+      <div class="stat"><b id="sMed" style="color:var(--warning)">0</b>Medium Risk</div>
+      <div class="stat"><b id="sLow" style="color:var(--success)">0</b>Low Risk</div>
+    </div>
+  </section>
 
-            // Highlight nav button
-            const targetNav = document.getElementById('nav-' + sectionId);
-            if (targetNav) targetNav.classList.add('active');
+  <!-- REPORT -->
+  <section id="report" class="page">
+    <div class="center"><h2>Report & Get Help</h2><p>Verified official channels in India.</p></div>
+    <div class="card alert">
+      <h3 style="color:var(--danger)">💰 Lost money to cyber fraud?</h3>
+      <p style="margin:8px 0 10px;">Act quickly. Early reporting improves chances of freezing funds.</p>
+      <ul style="margin-left:18px; line-height:1.8;">
+        <li>Call <b>1930</b> — National Cyber Fraud Helpline (24/7)</li>
+        <li>Report at <b>cybercrime.gov.in</b></li>
+        <li>Call your bank using the number on your card/app (not from the suspicious message)</li>
+      </ul>
+    </div>
+  </section>
+</div>
 
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+<footer>CYBER SHIELD — PAUSE • CHECK • PROTECT | Emergency Helpline: <b>1930</b></footer>
 
-        // 2. STATE & SAMPLE DATA
-        let hasImage = false;
-        let stats = { total: 0, high: 0, medium: 0, low: 0 };
+<script>
+const samples = {
+  prize: "🎉 CONGRATULATIONS! You won ₹50,00,000 in Amazon Lucky Draw! Click http://amaz0n-prize.xyz/claim to claim. Pay ₹999 registration fee via PhonePe to unlock reward. Send OTP to verify.",
+  bank: "URGENT: Dear Customer, your SBI account is suspended due to pending KYC update. Click http://sbi-kyc-update.tk/verify to update Aadhaar & PAN details immediately or account will be closed in 2 hours.",
+  job: "Work from Home Job Opportunity! Earn ₹5,000-₹15,000 daily doing simple typing work. No experience required. Registration fee ₹1,500 (refundable). Contact WhatsApp 9876543210.",
+  investment: "📈 GUARANTEED RETURNS! Make ₹1,00,000 daily! Join our trading group. Guaranteed 500% profit in 30 days. Risk-free investment via Bitcoin/UPI. Invest ₹10,000 now!",
+  legit: "Your order #AMZ-87234 has been dispatched via BlueDart. Expected delivery by Tomorrow. Track your package on the official Amazon App."
+};
 
-        const samples = {
-            prize: "🎉 CONGRATULATIONS! You won ₹50,00,000 in Amazon Lucky Draw! Click http://amaz0n-prize.xyz/claim to claim. Pay ₹999 registration fee via PhonePe to unlock reward. Send OTP to verify.",
-            bank: "URGENT: Dear Customer, your SBI account is suspended due to pending KYC update. Click http://sbi-kyc-update.tk/verify to update Aadhaar & PAN details immediately or account will be closed in 2 hours.",
-            job: "Work from Home Job Opportunity! Earn ₹5,000-₹15,000 daily doing simple typing work. No experience required. Registration fee ₹1,500 (refundable). Contact WhatsApp 9876543210.",
-            investment: "📈 GUARANTEED RETURNS! Make ₹1,00,000 daily! Join our trading group. Guaranteed 500% profit in 30 days. Risk-free investment via Bitcoin/UPI. Invest ₹10,000 now!",
-            legit: "Your order #AMZ-87234 has been dispatched via BlueDart. Expected delivery by Tomorrow. Track your package on the official Amazon App."
-        };
+const rules = [
+  { re: /(won|winner|prize|reward|lucky draw|cash prize|lott[eo]ry|scratch card|jeeto|gold)/i, score: 25, title: "Prize / Reward Claim", desc: "Unsolicited prize offers are commonly used to create excitement and lower caution." },
+  { re: /(urgent|immediately|within \d+ hours|account.*block|suspend|deactivat|final warning)/i, score: 25, title: "Urgency / Threat Pressure", desc: "Fake deadlines push you to act before verifying through official channels." },
+  { re: /(pay|fee|registration charge|processing fee|advance payment|send money)/i, score: 25, title: "Upfront Payment Demand", desc: "Real prizes/jobs do not require you to pay money to receive benefits." },
+  { re: /(otp|password|pin|cvv|aadhaar|pan card|bank details)/i, score: 30, title: "Credential Request", desc: "Banks and genuine orgs never ask for OTP/PIN/password by message." },
+  { re: /(https?:\/\/[^\s]*(\.xyz|\.tk|\.top|\.click|bit\.ly|tinyurl|amaz0n|sbi-)|http:\/\/)/i, score: 25, title: "Suspicious Link", desc: "Risky domains, shorteners, or brand lookalikes often hide phishing pages." },
+  { re: /(guaranteed return|100% profit|double your money|risk-free)/i, score: 25, title: "Unrealistic Returns", desc: "No genuine investment can guarantee high risk-free profits." }
+];
 
-        const rules = [
-            { pattern: /(won|winner|prize|reward|lucky draw|cash prize|lott[eo]ry|scratch card|jeeto|gold)/i, score: 25, title: "Prize or Reward Claim", desc: "Promises of free prize money or rewards trigger excitement to bypass caution." },
-            { pattern: /(urgent|immediately|within \d+ hours|account.*blocked|suspended|deactivated|final warning)/i, score: 25, title: "Urgency & Threat Tactics", desc: "Creates artificial panic to force quick actions before you verify." },
-            { pattern: /(pay|fee|registration charge|processing fee|advance payment|send money)/i, score: 25, title: "Upfront Payment Demand", desc: "Legitimate prizes or job offers NEVER ask you to pay money to receive benefits." },
-            { pattern: /(otp|password|pin|cvv|aadhaar|pan card|bank details)/i, score: 30, title: "Sensitive Credential Request", desc: "Banks never ask for private OTPs or PINs via messages or forms." },
-            { pattern: /(http:\/\/|https?:\/\/[^\s]*(\.xyz|\.tk|\.top|\.click|bit\.ly|tinyurl|amaz0n|sbi-))/i, score: 25, title: "Suspicious or Unverified Link", desc: "Uses risky domain extensions or lookalike brand spellings." },
-            { pattern: /(guaranteed return|100% profit|double your money|risk-free)/i, score: 25, title: "Unrealistic Investment Promise", desc: "No legitimate investment can guarantee high returns without risk." }
-        ];
+let currentCat = "sms";
+let hasImage = false;
+let stats = { total: 0, high: 0, medium: 0, low: 0 };
 
-        // 3. EVENT HANDLERS
-        function selectScenario(scenario, element) {
-            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('selected'));
-            element.classList.add('selected');
-        }
+function go(id) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".menu button").forEach(b => b.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  const nav = document.getElementById("nav-" + id);
+  if (nav) nav.classList.add("active");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
 
-        function switchTab(tabId, element) {
-            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            element.classList.add('active');
-            document.getElementById(tabId).classList.add('active');
-        }
+function pickCat(el) {
+  document.querySelectorAll(".cat").forEach(c => c.classList.remove("active"));
+  el.classList.add("active");
+  currentCat = el.getAttribute("data-cat");
+}
 
-        function useSample(key) {
-            document.getElementById('inputText').value = samples[key];
-            switchTab('tab-text', document.querySelectorAll('.tab-item')[0]);
-        }
+function showTab(name, btn) {
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+  btn.classList.add("active");
+  document.getElementById("tab-" + name).classList.add("active");
+}
 
-        function handleImageSelect(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('previewImage').src = e.target.result;
-                    document.getElementById('imagePreviewBox').classList.remove('hidden');
-                    hasImage = true;
-                };
-                reader.readAsDataURL(file);
-            }
-        }
+function loadSample(key) {
+  document.getElementById("textInput").value = samples[key];
+  // force text tab active
+  const textBtn = document.querySelectorAll(".tab")[0];
+  showTab("text", textBtn);
+}
 
-        function clearImage() {
-            document.getElementById('imagePreviewBox').classList.add('hidden');
-            document.getElementById('fileUpload').value = '';
-            hasImage = false;
-        }
+function onImage(e) {
+  const file = e.target.files && e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    document.getElementById("imgPreview").src = ev.target.result;
+    document.getElementById("imgBox").classList.remove("hidden");
+    hasImage = true;
+  };
+  reader.readAsDataURL(file);
+}
 
-        function runScamCheck() {
-            let activeTab = document.querySelector('.tab-content.active').id;
-            let textToAnalyze = '';
+function clearImage() {
+  document.getElementById("fileInput").value = "";
+  document.getElementById("imgBox").classList.add("hidden");
+  hasImage = false;
+}
 
-            if (activeTab === 'tab-text') {
-                textToAnalyze = document.getElementById('inputText').value;
-            } else if (activeTab === 'tab-url') {
-                textToAnalyze = document.getElementById('inputUrl').value;
-            } else if (activeTab === 'tab-image') {
-                if (hasImage) {
-                    textToAnalyze = "Reward Scratch Card Win Gold Offer Registration Fee Claim Urgency Money Prize Call";
-                } else {
-                    textToAnalyze = document.getElementById('inputText').value;
-                }
-            }
+function getActiveText() {
+  const active = document.querySelector(".panel.active").id;
+  if (active === "tab-text") return document.getElementById("textInput").value.trim();
+  if (active === "tab-url") return document.getElementById("urlInput").value.trim();
+  if (active === "tab-image") {
+    if (hasImage) return "reward scratch card gold offer prize claim pay registration fee winner urgent money otp";
+    return document.getElementById("textInput").value.trim();
+  }
+  return "";
+}
 
-            if (!textToAnalyze || textToAnalyze.trim().length < 3) {
-                alert("Please paste text, enter a link, or select an image first!");
-                return;
-            }
+function scoreText(text) {
+  let score = 0;
+  const flags = [];
+  rules.forEach(r => {
+    if (r.re.test(text)) {
+      score += r.score;
+      flags.push(r);
+    }
+  });
+  score = Math.min(100, score);
+  const level = score >= 60 ? "high" : score >= 30 ? "medium" : "low";
+  return { score, level, flags };
+}
 
-            let score = 0;
-            let matchedFlags = [];
+function analyze() {
+  const text = getActiveText();
+  if (!text || text.length < 3) {
+    alert("Please paste a message, enter a URL, or upload an image first.");
+    return;
+  }
+  const result = scoreText(text);
 
-            rules.forEach(rule => {
-                if (rule.pattern.test(textToAnalyze)) {
-                    score += rule.score;
-                    matchedFlags.push(rule);
-                }
-            });
+  stats.total++;
+  stats[result.level]++;
+  document.getElementById("sTotal").textContent = stats.total;
+  document.getElementById("sHigh").textContent = stats.high;
+  document.getElementById("sMed").textContent = stats.medium;
+  document.getElementById("sLow").textContent = stats.low;
 
-            score = Math.min(100, score);
-            let level = score >= 60 ? 'high' : score >= 30 ? 'medium' : 'low';
+  const banner = document.getElementById("resultBanner");
+  banner.className = "result " + result.level;
+  banner.innerHTML = `
+    <div class="score">${result.score}</div>
+    <h3>${result.level.toUpperCase()} RISK DETECTED</h3>
+    <p style="margin-top:6px;">${
+      result.level === "high" ? "🚨 Strong scam indicators found." :
+      result.level === "medium" ? "⚠️ Suspicious patterns detected. Verify carefully." :
+      "✅ Low risk indicators. Still verify independently."
+    }</p>`;
 
-            // Stats update
-            stats.total++;
-            if (level === 'high') stats.high++;
-            else if (level === 'medium') stats.medium++;
-            else stats.low++;
+  let flagsHtml = "<h3 style='margin:8px 0;'>Red Flags</h3>";
+  if (result.flags.length) {
+    flagsHtml += result.flags.map(f => `
+      <div class="flag ${result.level}">
+        <div>🔴</div>
+        <div><b>${f.title}</b><div class="muted">${f.desc}</div></div>
+      </div>`).join("");
+  } else {
+    flagsHtml += `<div class="flag low"><div>ℹ️</div><div><b>No major triggers matched</b><div class="muted">Still verify through official channels.</div></div></div>`;
+  }
+  document.getElementById("flagsOut").innerHTML = flagsHtml;
 
-            document.getElementById('dTotal').textContent = stats.total;
-            document.getElementById('dHigh').textContent = stats.high;
-            document.getElementById('dMedium').textContent = stats.medium;
-            document.getElementById('dLow').textContent = stats.low;
+  document.getElementById("actionsOut").innerHTML = `
+    <h3 style="margin:12px 0 8px;">Recommended Actions</h3>
+    <div class="actions-box">
+      <p>❌ Do NOT share OTP, PIN, password, or CVV.</p>
+      <p>❌ Do NOT pay registration/processing fees to claim rewards or jobs.</p>
+      <p>❌ Do NOT click unknown links. Type official websites yourself.</p>
+      <p>✅ Verify using official app/website or the number on your bank card.</p>
+      <p>✅ If money was sent, call <b>1930</b> immediately.</p>
+    </div>`;
 
-            // Render Banner
-            const banner = document.getElementById('resultBanner');
-            banner.className = `result-banner ${level}`;
-            banner.innerHTML = `
-                <div class="score-badge">${score}</div>
-                <h2>${level.toUpperCase()} RISK DETECTED</h2>
-                <p style="margin-top:6px; font-size:0.9rem;">
-                    ${level === 'high' ? '🚨 Strong indicators of a scam attempt.' : level === 'medium' ? '⚠️ Caution advised. Contains suspicious triggers.' : '✅ Low risk indicators detected.'}
-                </p>
-            `;
+  document.getElementById("resultCard").classList.remove("hidden");
+  document.getElementById("resultCard").scrollIntoView({ behavior: "smooth", block: "start" });
+}
 
-            // Render Flags
-            let flagsHtml = '<h3 style="margin-bottom:10px;">Detected Red Flags</h3>';
-            if (matchedFlags.length > 0) {
-                flagsHtml += matchedFlags.map(f => `
-                    <div class="red-flag-card ${level}">
-                        <div>🔴</div>
-                        <div>
-                            <strong>${f.title}</strong>
-                            <div style="font-size:0.85rem; color:var(--text-muted); margin-top:2px;">${f.desc}</div>
-                        </div>
-                    </div>
-                `).join('');
-            } else {
-                flagsHtml += `
-                    <div class="red-flag-card low">
-                        <div>ℹ️</div>
-                        <div>
-                            <strong>No obvious scam triggers matched</strong>
-                            <div style="font-size:0.85rem; color:var(--text-muted);">Always verify unexpected offers directly with official brand representatives.</div>
-                        </div>
-                    </div>
-                `;
-            }
-            document.getElementById('flagsBox').innerHTML = flagsHtml;
+function resetAnalyze() {
+  document.getElementById("textInput").value = "";
+  document.getElementById("urlInput").value = "";
+  clearImage();
+  document.getElementById("resultCard").classList.add("hidden");
+}
 
-            // Render Actions
-            document.getElementById('actionsBox').innerHTML = `
-                <h3 style="margin:16px 0 10px;">Recommended Safe Actions</h3>
-                <div style="background:var(--bg-input); padding:14px; border-radius:8px;">
-                    <p style="font-size:0.85rem; margin-bottom:6px;">❌ <strong>Do NOT share OTPs, passwords, or PINs</strong> with anyone.</p>
-                    <p style="font-size:0.85rem; margin-bottom:6px;">❌ <strong>Do NOT pay upfront processing/registration fees.</strong></p>
-                    <p style="font-size:0.85rem;">✅ <strong>Verify independently</strong> using official contact numbers from brand apps or physical cards.</p>
-                </div>
-            `;
+function compareMsgs() {
+  const a = document.getElementById("compA").value.trim();
+  const b = document.getElementById("compB").value.trim();
+  if (!a || !b) { alert("Enter text in both boxes."); return; }
+  const ra = scoreText(a), rb = scoreText(b);
+  document.getElementById("scoreA").textContent = `Risk Score: ${ra.score}/100 (${ra.level})`;
+  document.getElementById("scoreB").textContent = `Risk Score: ${rb.score}/100 (${rb.level})`;
+}
 
-            document.getElementById('results-card').classList.remove('hidden');
-            document.getElementById('results-card').scrollIntoView({ behavior: 'smooth' });
-        }
+function loadCompareDemo() {
+  document.getElementById("compA").value = samples.bank;
+  document.getElementById("compB").value = samples.legit;
+  document.getElementById("scoreA").textContent = "";
+  document.getElementById("scoreB").textContent = "";
+}
 
-        function resetCheck() {
-            document.getElementById('inputText').value = '';
-            document.getElementById('inputUrl').value = '';
-            clearImage();
-            document.getElementById('results-card').classList.add('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+function toggleTheme() { document.body.classList.toggle("light"); }
 
-        function runCompare() {
-            let a = document.getElementById('compA').value;
-            let b = document.getElementById('compB').value;
-            if (!a || !b) { alert("Enter text in both boxes to compare!"); return; }
-
-            let scoreA = 0, scoreB = 0;
-            rules.forEach(r => { if (r.pattern.test(a)) scoreA += r.score; if (r.pattern.test(b)) scoreB += r.score; });
-
-            document.getElementById('resA').innerHTML = `Risk Score: ${Math.min(100, scoreA)} / 100`;
-            document.getElementById('resB').innerHTML = `Risk Score: ${Math.min(100, scoreB)} / 100`;
-        }
-
-        function loadCompareDemo() {
-            document.getElementById('compA').value = samples.bank;
-            document.getElementById('compB').value = samples.legit;
-        }
-
-        function toggleTheme() {
-            document.body.classList.toggle('light-theme');
-        }
-
-        // 4. MATRIX CANVAS ANIMATION (DEFENSIVE)
-        try {
-            const canvas = document.getElementById('matrixCanvas');
-            if (canvas) {
-                const ctx = canvas.getContext('2d');
-                canvas.width = canvas.parentElement.offsetWidth || window.innerWidth;
-                canvas.height = canvas.parentElement.offsetHeight || 500;
-
-                const chars = "0101CYBERSHIELD";
-                const fontSize = 14;
-                const columns = Math.floor(canvas.width / fontSize) || 20;
-                const drops = Array(columns).fill(1);
-
-                setInterval(function() {
-                    ctx.fillStyle = 'rgba(11, 15, 25, 0.08)';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    ctx.fillStyle = '#00d4ff';
-                    ctx.font = fontSize + 'px monospace';
-
-                    for (let i = 0; i < drops.length; i++) {
-                        const char = chars[Math.floor(Math.random() * chars.length)];
-                        ctx.fillText(char, i * fontSize, drops[i] * fontSize);
-                        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                        drops[i]++;
-                    }
-                }, 50);
-            }
-        } catch(e) { console.log("Matrix background initialized silently"); }
-    </script>
+// Matrix background (safe)
+(function(){
+  try {
+    const c = document.getElementById("matrix");
+    if (!c) return;
+    const ctx = c.getContext("2d");
+    function resize(){ c.width = c.parentElement.clientWidth; c.height = c.parentElement.clientHeight; }
+    resize(); window.addEventListener("resize", resize);
+    const chars = "01CYBERSHIELD"; const size = 14;
+    let cols = Math.floor(c.width/size) || 20;
+    let drops = Array(cols).fill(1);
+    setInterval(() => {
+      ctx.fillStyle = "rgba(11,18,32,0.08)";
+      ctx.fillRect(0,0,c.width,c.height);
+      ctx.fillStyle = "#22d3ee";
+      ctx.font = size + "px monospace";
+      cols = Math.floor(c.width/size) || 20;
+      if (drops.length !== cols) drops = Array(cols).fill(1);
+      for (let i=0;i<drops.length;i++){
+        const ch = chars[Math.floor(Math.random()*chars.length)];
+        ctx.fillText(ch, i*size, drops[i]*size);
+        if (drops[i]*size > c.height && Math.random()>0.975) drops[i]=0;
+        drops[i]++;
+      }
+    }, 50);
+  } catch(e) {}
+})();
+</script>
 </body>
 </html>
